@@ -1,7 +1,7 @@
 import numpy as np
 import random
 
-def Reset():
+def Reset():  #山札を作成
 
     Deck = []
 
@@ -26,11 +26,11 @@ def Reset():
 
     return Deck
 
-def Reset_np():
+def Reset_np():  #Numpyで山札を作成
     Deck_np = np.array(Reset(), dtype=object)
     return Deck_np
 
-def Draw(Deck,Num = 1,Del = 0):
+def Draw(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1)カードを引く
     Resalt = []
     if Del == 1:
         for i in range(Num):
@@ -43,7 +43,7 @@ def Draw(Deck,Num = 1,Del = 0):
             del Deck[-1]
         return Resalt
 
-def Draw_Random(Deck,Num = 1,Del = 0):
+def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外は未実装)ランダムにカードを引く
     if Num == 1:
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards)
@@ -59,7 +59,7 @@ def Draw_Random(Deck,Num = 1,Del = 0):
         print("Unimplemented")
         return
 
-def Draw_np(Deck,Num = 1,Del = 0):
+def Draw_np(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォルトは1それ以外は未実装)カードを引く
     if Num == 1:
         if Del == 1:
             return [Deck[-1][0],Deck[-1][1],Deck[-1][2]]
@@ -74,7 +74,7 @@ def Draw_np(Deck,Num = 1,Del = 0):
         print("Unimplemented")
         return
 
-def Draw_np_Random(Deck,Num = 1,Del = 0):
+def Draw_np_Random(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォルトは1それ以外は未実装)ランダムにカードを引く
     if Num == 1:
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards)
