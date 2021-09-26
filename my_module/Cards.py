@@ -46,7 +46,7 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1)カードを引く
 def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外は未実装)ランダムにカードを引く
     if Num == 1:
         Count_Cards = len(Deck)
-        Choose_Card = random.randint(0,Count_Cards)
+        Choose_Card = random.randint(0,Count_Cards-1)
         if Del == 1:
             return [Deck[Choose_Card][0],Deck[Choose_Card][1],Deck[Choose_Card][2]]
         else:
@@ -77,7 +77,7 @@ def Draw_np(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォ�
 def Draw_np_Random(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォルトは1それ以外は未実装)ランダムにカードを引く
     if Num == 1:
         Count_Cards = len(Deck)
-        Choose_Card = random.randint(0,Count_Cards)
+        Choose_Card = random.randint(0,Count_Cards-1)
         if Del == 1:
             return [Deck[Choose_Card][0],Deck[Choose_Card][1],Deck[Choose_Card][2]]
         else:
