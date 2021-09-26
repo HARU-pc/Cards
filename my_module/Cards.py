@@ -31,15 +31,17 @@ def Reset_np():
     return Deck_np
 
 def Draw(Deck,Num = 1,Del = 0):
-    if Num == 1:
-        if Del == 1:
-            return [Deck[-1][0],Deck[-1][1],Deck[-1][2]]
-        else:
-            Card_Mark = Deck[-1][0]
-            Card_Num = Deck[-1][1]
-            Card_Name = Deck[-1][2]
+    Resalt = []
+    if Del == 1:
+        for i in range(Num):
+            i += 1
+            Resalt.append([Deck[-i][0],Deck[-i][1],Deck[-i][2]])
+        return Resalt
+    else:
+        for i in range(Num):
+            Resalt.append([Deck[-1][0],Deck[-1][1],Deck[-1][2]])
             del Deck[-1]
-            return [Card_Mark,Card_Num,Card_Name]
+        return Resalt
 
 def Draw_Random(Deck,Num = 1,Del = 0):
     if Num == 1:
@@ -53,6 +55,9 @@ def Draw_Random(Deck,Num = 1,Del = 0):
             Card_Name = Deck[Choose_Card][2]
             del Deck[Choose_Card]
             return [Card_Mark,Card_Num,Card_Name]
+    else:
+        print("Unimplemented")
+        return
 
 def Draw_np(Deck,Num = 1,Del = 0):
     if Num == 1:
@@ -65,6 +70,9 @@ def Draw_np(Deck,Num = 1,Del = 0):
             Deck = np.delete(Deck, -1, 0)
             #return [Card_Mark,Card_Num,Card_Name]
             return [Deck,[Card_Mark,Card_Num,Card_Name]]
+    else:
+        print("Unimplemented")
+        return
 
 def Draw_np_Random(Deck,Num = 1,Del = 0):
     if Num == 1:
@@ -79,4 +87,8 @@ def Draw_np_Random(Deck,Num = 1,Del = 0):
             Deck = np.delete(Deck, Choose_Card, 0)
             #return [Card_Mark,Card_Num,Card_Name]
             return [Deck,[Card_Mark,Card_Num,Card_Name]]
+    else:
+        print("Unimplemented")
+        return
+
 
