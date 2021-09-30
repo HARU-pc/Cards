@@ -44,6 +44,7 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1)カードを引く
         return Resalt
 
 def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外は未実装)ランダムにカードを引く
+    random.seed()
     Resalt = []
     for i in range(Num):
         Count_Cards = len(Deck)
