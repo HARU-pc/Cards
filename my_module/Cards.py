@@ -35,11 +35,11 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1)カードを引く
     if Del == 1:
         for i in range(Num):
             i += 1
-            Resalt.append([Deck[-i][0],Deck[-i][1],Deck[-i][2]])
+            Resalt.append([Deck[-i]])
         return Resalt
     else:
         for i in range(Num):
-            Resalt.append([Deck[-1][0],Deck[-1][1],Deck[-1][2]])
+            Resalt.append([Deck[-1]])
             del Deck[-1]
         return Resalt
 
@@ -48,13 +48,11 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外�
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards-1)
         if Del == 1:
-            return [Deck[Choose_Card][0],Deck[Choose_Card][1],Deck[Choose_Card][2]]
+            return Deck[Choose_Card]
         else:
-            Card_Mark = Deck[Choose_Card][0]
-            Card_Num = Deck[Choose_Card][1]
-            Card_Name = Deck[Choose_Card][2]
+            Card_Data = Deck[Choose_Card]
             del Deck[Choose_Card]
-            return [Card_Mark,Card_Num,Card_Name]
+            return Card_Data
     else:
         print("Unimplemented")
         return
@@ -62,14 +60,11 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外�
 def Draw_np(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォルトは1それ以外は未実装)カードを引く
     if Num == 1:
         if Del == 1:
-            return [Deck[-1][0],Deck[-1][1],Deck[-1][2]]
+            return [Deck[-1]]
         else:
-            Card_Mark = Deck[-1][0]
-            Card_Num = Deck[-1][1]
-            Card_Name = Deck[-1][2]
+            Card_Data = Deck[-1]
             Deck = np.delete(Deck, -1, 0)
-            #return [Card_Mark,Card_Num,Card_Name]
-            return [Deck,[Card_Mark,Card_Num,Card_Name]]
+            return [Deck,Card_Data]
     else:
         print("Unimplemented")
         return
@@ -79,14 +74,11 @@ def Draw_np_Random(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デ
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards-1)
         if Del == 1:
-            return [Deck[Choose_Card][0],Deck[Choose_Card][1],Deck[Choose_Card][2]]
+            return Deck[Choose_Card]
         else:
-            Card_Mark = Deck[Choose_Card][0]
-            Card_Num = Deck[Choose_Card][1]
-            Card_Name = Deck[Choose_Card][2]
+            Card_Data = Deck[Choose_Card]
             Deck = np.delete(Deck, Choose_Card, 0)
-            #return [Card_Mark,Card_Num,Card_Name]
-            return [Deck,[Card_Mark,Card_Num,Card_Name]]
+            return [Deck,Card_Data]
     else:
         print("Unimplemented")
         return
