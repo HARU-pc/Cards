@@ -32,15 +32,15 @@ def Reset_np():  #Numpyで山札を作成
 
 def Draw(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1)カードを引く
     Resalt = []
-    if Del == 1:
-        for i in range(Num):
-            i += 1
-            Resalt.append(Deck[-i])
-        return Resalt
-    else:
+    if Del == 0:
         for i in range(Num):
             Resalt.append(Deck[-1])
             del Deck[-1]
+        return Resalt
+    else:
+        for i in range(Num):
+            i += 1
+            Resalt.append(Deck[-i])
         return Resalt
 
 def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外は未実装)ランダムにカードを引く
@@ -49,18 +49,14 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外�
     for i in range(Num):
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards-1)
-        if Del == 1:
-            Resalt.append(Deck[Choose_Card])
-        else:
-            Resalt.append(Deck[Choose_Card])
+        if Del == 0:
             del Deck[Choose_Card]
+        Resalt.append(Deck[Choose_Card])
     return Resalt
 
 def Draw_np(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォルトは1それ以外は未実装)カードを引く
     if Num == 1:
-        if Del == 1:
-            return [Deck[-1]]
-        else:
+        if Del == 0:
             Card_Data = Deck[-1]
             Deck = np.delete(Deck, -1, 0)
             return [Deck,Card_Data]
@@ -72,12 +68,9 @@ def Draw_np_Random(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デ
     if Num == 1:
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards-1)
-        if Del == 1:
-            return Deck[Choose_Card]
-        else:
-            Card_Data = Deck[Choose_Card]
-            Deck = np.delete(Deck, Choose_Card, 0)
-            return [Deck,Card_Data]
+        Card_Data = Deck[Choose_Card]
+        Deck = np.delete(Deck, Choose_Card, 0)
+        return [Deck,Card_Data]
     else:
         print("Unimplemented")
         return
