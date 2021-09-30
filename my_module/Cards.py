@@ -44,18 +44,16 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1)カードを引く
         return Resalt
 
 def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1それ以外は未実装)ランダムにカードを引く
-    if Num == 1:
+    Resalt = []
+    for i in range(Num):
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards-1)
         if Del == 1:
-            return Deck[Choose_Card]
+            Resalt.append(Deck[Choose_Card])
         else:
-            Card_Data = Deck[Choose_Card]
+            Resalt.append(Deck[Choose_Card])
             del Deck[Choose_Card]
-            return Card_Data
-    else:
-        print("Unimplemented")
-        return
+    return Resalt
 
 def Draw_np(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォルトは1それ以外は未実装)カードを引く
     if Num == 1:
