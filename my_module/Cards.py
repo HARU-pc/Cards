@@ -60,6 +60,9 @@ def Draw_np(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デフォ�
             Card_Data = Deck[-1]
             Deck = np.delete(Deck, -1, 0)
             return [Deck,Card_Data]
+        else:
+            return Deck[-1]
+            
     else:
         print("Unimplemented")
         return
