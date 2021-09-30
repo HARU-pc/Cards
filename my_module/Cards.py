@@ -35,11 +35,11 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚(デフォルトは1)カードを引く
     if Del == 1:
         for i in range(Num):
             i += 1
-            Resalt.append([Deck[-i]])
+            Resalt.append(Deck[-i])
         return Resalt
     else:
         for i in range(Num):
-            Resalt.append([Deck[-1]])
+            Resalt.append(Deck[-1])
             del Deck[-1]
         return Resalt
 
