@@ -71,8 +71,7 @@ def Draw_np_Random(Deck,Num = 1,Del = 0):  #Numpy配列の山札からNum枚(デ
     if Del == 1:
         return np.random.choice(Deck,Num)
     elif Num == 1:
-        Count_Cards = len(Deck)
-        Choose_Card = random.randint(0,Count_Cards-1)
+        Choose_Card = random.randint(0,len(Deck) - 1)
         Card_Data = Deck[Choose_Card]
         Deck = np.delete(Deck, Choose_Card, 0)
         return [Deck,Card_Data]
