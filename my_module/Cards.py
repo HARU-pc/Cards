@@ -86,7 +86,9 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
         for i in range(Num):
             Card_Data_list.append(Deck_list[-1])
             del Deck_list[-1]
-        Resalt_np = np.array([Deck_list,Card_Data_list], dtype=object)
+        Deck_np = np.array(Deck_list, dtype=object)
+        Card_Data_np = np.array(Card_Data_list, dtype=object)
+        Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
 
     else:
@@ -94,7 +96,9 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
         for i in range(Num):
             i += 1
             Card_Data_list.append(Deck_list[-i])
-        Resalt_np = np.array([Deck_list,Card_Data_list], dtype=object)
+        Deck_np = np.array(Deck_list, dtype=object)
+        Card_Data_np = np.array(Card_Data_list, dtype=object)
+        Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
     return Resalt_np
 
@@ -112,8 +116,23 @@ def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚�
             del Deck_list[Choose_Card]
         Card_Data_list.append(Deck_list[Choose_Card])
 
-    Resalt_np = np.array([Deck_list,Card_Data_list], dtype=object)
+    Deck_np = np.array(Deck_list, dtype=object)
+    Card_Data_np = np.array(Card_Data_list, dtype=object)
+    Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
     return Resalt_np
 
+def Shuffle():
 
+    return
+
+
+def Shuffle_np(Deck,Overwrite_or_Create = 0):  #山札をシャッフル
+
+    if Overwrite_or_Create == 0:  #上書き※破壊的メソッド
+        np.random.shuffle(Deck)
+        return
+
+    elif Overwrite_or_Create == 1:  #新規作成
+        Resalt = np.random.permutation(Deck)
+        return Resalt
