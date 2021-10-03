@@ -68,9 +68,10 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚ランダムにカードを引く
         Count_Cards = len(Deck)
         Choose_Card = random.randint(0,Count_Cards-1)
 
+        Resalt.append(Deck[Choose_Card])
+
         if Del == 0:
             del Deck[Choose_Card]
-        Resalt.append(Deck[Choose_Card])
 
     return Resalt
 
@@ -110,9 +111,10 @@ def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚�
         Count_Cards = len(Deck_list)
         Choose_Card = random.randint(0,Count_Cards-1)
 
+        Card_Data_list.append(Deck_list[Choose_Card])
+
         if Del == 0:
             del Deck_list[Choose_Card]
-        Card_Data_list.append(Deck_list[Choose_Card])
 
     Deck_np = np.array(Deck_list, dtype=object)
     Card_Data_np = np.array(Card_Data_list, dtype=object)
