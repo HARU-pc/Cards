@@ -84,22 +84,22 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
     if Del == 0:
 
         for i in range(Num):
-        Deck_np = np.array(Deck_list, dtype=object)
             Card_Data_list.append(Deck_list[0])
             del Deck_list[0]
+        Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)
+        Deck_np[:] = np.array(Deck_list, dtype=object)[:]
         Card_Data_np = np.array(Card_Data_list, dtype=object)
-        Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
 
     else:
 
         for i in range(Num):
-        Deck_np = np.array(Deck_list, dtype=object)
             Card_Data_list.append(Deck_list[i])
+        Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)
+        Deck_np[:] = np.array(Deck_list, dtype=object)[:]
         Card_Data_np = np.array(Card_Data_list, dtype=object)
-        Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
-    return Resalt_np
+    return Card_Data_np
 
 
 def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚ランダムにカードを引く
@@ -116,11 +116,11 @@ def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚�
         if Del == 0:
             del Deck_list[Choose_Card]
 
-    Deck_np = np.array(Deck_list, dtype=object)
+    Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)
+    Deck_np[:] = np.array(Deck_list, dtype=object)[:]
     Card_Data_np = np.array(Card_Data_list, dtype=object)
-    Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
-    return Resalt_np
+    return Card_Data_np
 
 def Shuffle():
 
