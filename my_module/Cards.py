@@ -59,23 +59,6 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚カードを引く
         return Resalt
 
 
-def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚ランダムにカードを引く
-
-    #random.seed()
-    Resalt = []
-
-    for i in range(Num):
-        Count_Cards = len(Deck)
-        Choose_Card = random.randint(0,Count_Cards-1)
-
-        Resalt.append(Deck[Choose_Card])
-
-        if Del == 0:
-            del Deck[Choose_Card]
-
-    return Resalt
-
-
 def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カードを引く
 
     Card_Data_list = []
@@ -104,6 +87,23 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
         Card_Data_np = np.array(Card_Data_list, dtype=object)
 
     return Card_Data_np
+
+
+def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚ランダムにカードを引く
+
+    #random.seed()
+    Resalt = []
+
+    for i in range(Num):
+        Count_Cards = len(Deck)
+        Choose_Card = random.randint(0,Count_Cards-1)
+
+        Resalt.append(Deck[Choose_Card])
+
+        if Del == 0:
+            del Deck[Choose_Card]
+
+    return Resalt
 
 
 def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚ランダムにカードを引く
