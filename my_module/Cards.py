@@ -79,14 +79,16 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚ランダムにカードを引く
 def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カードを引く
 
     Card_Data_list = []
-    Deck_list = Deck_np.tolist()
+    Deck_list = Deck_np.tolist()  #リストに変換
 
     if Del == 0:
 
         for i in range(Num):
             Card_Data_list.append(Deck_list[0])
             del Deck_list[0]
-        Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)
+
+        Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)  #引数のNumpy配列をリサイズ
+
         Deck_np[:] = np.array(Deck_list, dtype=object)[:]
         Card_Data_np = np.array(Card_Data_list, dtype=object)
 
@@ -95,8 +97,10 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
 
         for i in range(Num):
             Card_Data_list.append(Deck_list[i])
-        Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)
-        Deck_np[:] = np.array(Deck_list, dtype=object)[:]
+
+        Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)  #引数のNumpy配列をリサイズ
+
+        Deck_np[:] = np.array(Deck_list, dtype=object)[:]  #Numpy配列に変換
         Card_Data_np = np.array(Card_Data_list, dtype=object)
 
     return Card_Data_np
@@ -105,7 +109,7 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
 def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚ランダムにカードを引く
 
     Card_Data_list = []
-    Deck_list = Deck_np.tolist()
+    Deck_list = Deck_np.tolist()  #リストに変換
 
     for i in range(Num):
         Count_Cards = len(Deck_list)
@@ -113,11 +117,12 @@ def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚�
 
         Card_Data_list.append(Deck_list[Choose_Card])
 
-        if Del == 0:
+        if Del == 0:  #山札から引いたカードを削除
             del Deck_list[Choose_Card]
 
-    Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)
-    Deck_np[:] = np.array(Deck_list, dtype=object)[:]
+    Deck_np.resize(np.array(Deck_list, dtype=object).shape, refcheck = False)  #引数のNumpy配列をリサイズ
+
+    Deck_np[:] = np.array(Deck_list, dtype=object)[:]  #Numpy配列に変換
     Card_Data_np = np.array(Card_Data_list, dtype=object)
 
     return Card_Data_np
@@ -129,7 +134,7 @@ def Shuffle():
 
 def Shuffle_np(Deck,Overwrite_or_Create = 0):  #山札をシャッフル
 
-    if Overwrite_or_Create == 0:  #上書き※破壊的メソッド
+    if Overwrite_or_Create == 0:  #上書き ※破壊的メソッド
         np.random.shuffle(Deck)
         return
 
