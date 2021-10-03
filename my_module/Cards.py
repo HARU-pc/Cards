@@ -2,9 +2,11 @@ import numpy as np
 import random
 
 
+############################################################################################
+#山札を作成
 
 
-def Reset():  #山札を作成
+def Reset():  #list
 
     Deck = []
 
@@ -30,16 +32,18 @@ def Reset():  #山札を作成
     return Deck
 
 
-
-def Reset_np():  #Numpyで山札を作成
+def Reset_np():  #Numpy配列
 
     Deck_np = np.array(Reset(), dtype=object)
 
     return Deck_np
 
 
+############################################################################################
+#山札からNum枚カードを引く
 
-def Draw(Deck,Num = 1,Del = 0):  #Num枚カードを引く
+
+def Draw(Deck,Num = 1,Del = 0):  #list
 
     Resalt = []
 
@@ -59,7 +63,7 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚カードを引く
         return Resalt
 
 
-def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カードを引く
+def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
     Card_Data_list = []
     Deck_list = Deck_np.tolist()  #リストに変換
@@ -89,7 +93,11 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
     return Card_Data_np
 
 
-def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚ランダムにカードを引く
+############################################################################################
+#山札からNum枚ランダムにカードを引く
+
+
+def Draw_Random(Deck,Num = 1,Del = 0):  #list
 
     #random.seed()
     Resalt = []
@@ -106,7 +114,7 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #Num枚ランダムにカードを引く
     return Resalt
 
 
-def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚ランダムにカードを引く
+def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
     Card_Data_list = []
     Deck_list = Deck_np.tolist()  #リストに変換
@@ -127,12 +135,17 @@ def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚�
 
     return Card_Data_np
 
-def Shuffle():
+
+############################################################################################
+#山札をシャッフル
+
+
+def Shuffle():  #list
 
     return
 
 
-def Shuffle_np(Deck,Overwrite_or_Create = 0):  #山札をシャッフル
+def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
 
     if Overwrite_or_Create == 0:  #上書き ※破壊的メソッド
         np.random.shuffle(Deck)
