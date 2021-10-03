@@ -140,9 +140,15 @@ def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列
 #山札をシャッフル
 
 
-def Shuffle():  #list
+def Shuffle(Deck,Overwrite_or_Create = 0):  #list
 
-    return
+    if Overwrite_or_Create == 0:  #上書き ※破壊的メソッド
+        random.shuffle(Deck)
+        return
+
+    elif Overwrite_or_Create == 1:  #新規作成
+        Resalt = random.sample(Deck,len(Deck))
+        return Resalt
 
 
 def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
