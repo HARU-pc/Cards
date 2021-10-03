@@ -46,16 +46,15 @@ def Draw(Deck,Num = 1,Del = 0):  #Num枚カードを引く
     if Del == 0:
 
         for i in range(Num):
-            Resalt.append(Deck[-1])
-            del Deck[-1]
+            Resalt.append(Deck[0])
+            del Deck[0]
 
         return Resalt
 
     else:
 
         for i in range(Num):
-            i += 1
-            Resalt.append(Deck[-i])
+            Resalt.append(Deck[i])
 
         return Resalt
 
@@ -84,9 +83,9 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
     if Del == 0:
 
         for i in range(Num):
-            Card_Data_list.append(Deck_list[-1])
-            del Deck_list[-1]
         Deck_np = np.array(Deck_list, dtype=object)
+            Card_Data_list.append(Deck_list[0])
+            del Deck_list[0]
         Card_Data_np = np.array(Card_Data_list, dtype=object)
         Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
@@ -94,9 +93,8 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列の山札からNum枚カー�
     else:
 
         for i in range(Num):
-            i += 1
-            Card_Data_list.append(Deck_list[-i])
         Deck_np = np.array(Deck_list, dtype=object)
+            Card_Data_list.append(Deck_list[i])
         Card_Data_np = np.array(Card_Data_list, dtype=object)
         Resalt_np = np.array([Deck_np,Card_Data_np], dtype=object)
 
