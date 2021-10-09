@@ -19,12 +19,12 @@ def Get_input_float():  #入力をfloatとして返す
 def Open_Card(Cards,Sum,Player_or_Computer):
 
     if Player_or_Computer == 0:
-        print("\n\nOpen you're cards.")
+        print("\n\nYour Cards")
     elif Player_or_Computer == 1:
-        print("\n\nOpen computer's cards.")
+        print("\n\nComputer's Cards")
 
     for i in list(range(0,len(Cards))):
-        print(f"CARDS:{Cards[i][0]}{Cards[i][2]}")
+        print(f"CARDS{i + 1}:{Cards[i][0]}{Cards[i][2]}")
 
     if Player_or_Computer == 0:
         print(f"\nYou have {len(Cards)} cards.")
