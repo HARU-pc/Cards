@@ -97,10 +97,12 @@ try:
 
             for i in range(2):
 
-                Computer_Cards.append(Cards.Draw(Deck))
+                Computer_Cards.extend(Cards.Draw(Deck))
+                Computer_Sum += Computer_Cards[-1][1]
                 Hit_Card(Computer_Cards,Computer_Ace,Computer_Sum)
 
-                Player_Cards.append(Cards.Draw(Deck))
+                Player_Cards.extend(Cards.Draw(Deck))
+                Player_Sum += Player_Cards[-1][1]
                 Hit_Card(Player_Cards,Player_Ace,Player_Sum)
 
                 Count += 1
@@ -115,7 +117,8 @@ try:
                 if Computer_Sum < 17:
 
                     print('\nCOM HIT')
-                    Computer_Cards.append(Cards.Draw(Deck))
+                    Computer_Cards.extend(Cards.Draw(Deck))
+                    Computer_Sum += Computer_Cards[-1][1]
                     Hit_Card(Computer_Cards,Computer_Ace,Computer_Sum)
 
                 else:
@@ -133,7 +136,8 @@ try:
                         Player_Hit = 1
                         continue
 
-                    Player_Cards.append(Cards.Draw(Deck))
+                    Player_Cards.extend(Cards.Draw(Deck))
+                    Player_Sum += Player_Cards[-1][1]
                     Hit_Card(Player_Cards,Player_Ace,Player_Sum)
 
                     Open_Card(Player_Cards,Player_Sum,Player)
