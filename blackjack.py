@@ -82,7 +82,8 @@ try:
             Player_Ace = 0
             Player_Cards = []
 
-            Deck = Cards.Shuffle(Cards.Reset())
+            Deck = Cards.Reset()
+            Cards.Shuffle(Deck)
 
             print(f'LOUND:{Lound}\n\n$:{Money}\n')
 
