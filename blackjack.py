@@ -59,7 +59,7 @@ try:
         Game_data = {"money":0,"win":0,"lose":0,"draw":0,"game over":0,"lound":0}
         return Game_data
 
-    def main_proc():
+    def main():
 
         Computer = 1
         Player = 0
@@ -223,7 +223,7 @@ try:
             if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
                 break
 
-    main_proc()
+    main()
 
     pass
 
