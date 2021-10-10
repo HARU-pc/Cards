@@ -107,11 +107,9 @@ try:
             for i in range(2):
 
                 Computer_Cards.extend(Cards.Draw(Deck))
-                #Computer_Sum += Computer_Cards[-1][1]
                 Hit_Card(Computer_Cards,Computer_Data)
 
                 Player_Cards.extend(Cards.Draw(Deck))
-                #Player_Sum += Player_Cards[-1][1]
                 Hit_Card(Player_Cards,Player_Data)
 
                 Count += 1
@@ -127,7 +125,6 @@ try:
 
                     print('\nComputer hit')
                     Computer_Cards.extend(Cards.Draw(Deck))
-                    #Computer_Sum += Computer_Cards[-1][1]
                     Hit_Card(Computer_Cards,Computer_Data)
 
                 else:
@@ -146,7 +143,6 @@ try:
                         continue
 
                     Player_Cards.extend(Cards.Draw(Deck))
-                    #Player_Sum += Player_Cards[-1][1]
                     Hit_Card(Player_Cards,Player_Data)
 
                     Open_Card(Player_Cards,Player_Data[0],Player)
