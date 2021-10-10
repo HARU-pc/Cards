@@ -32,7 +32,7 @@ def Open_Card(Cards,Sum,Player_or_Computer):
     elif Player_or_Computer == 1:
         print(f"\nComputer has {len(Cards)} cards.")
 
-    print(f"TOTAL:{Sum}\n")
+    print(f"TOTAL:{Sum}")
 
 
 def Hit_Card(Cards,Data):
