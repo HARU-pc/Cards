@@ -16,7 +16,6 @@ def Get_input_float():  #入力をfloatとして返す
 
     return Input_phrase
 
-
 def Open_Card(Cards,Sum,Player_or_Computer):
 
     if Player_or_Computer == 0:
@@ -32,8 +31,6 @@ def Open_Card(Cards,Sum,Player_or_Computer):
         print(f"\nYou have {len(Cards)} cards.")
     elif Player_or_Computer == 1:
         print(f"\nComputer has {len(Cards)} cards.")
-
-
 
 def Hit_Card(Cards,Data):
 
