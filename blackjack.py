@@ -195,28 +195,28 @@ try:
             print(f'Your Money:{Money}\n')
 
             if Money <= 0:
-                print('GAME OVER\nWill you retry?  Yes:1 No:2')
+                print('GAME OVER\nDo you want to continue? [Y/n] ',end='')
                 Check_Retry = input()
-                while Check_Retry != 1|2 and Check_Retry.lower() != r'.*yes.*|.*no.*':
-                    print(f'ERROR:There is no {Check_Retry} in the choices.\nWill you retry?  Yes:1 No:2')
+                while re.search(r'[.*?y.*?|.*?n.*?]',Continue_or_Finish.lower()) == None:
+                    print(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ',end='')
                     Check_Retry = input()
 
-                if Check_Retry == 1 or Check_Retry.lower() == r'.*yes.*':
+                if re.search(r'[.*?y.*?]',Continue_or_Finish.lower()) == 'y':
                     Lound = 0
                     print('\n\nHow much money do you have?\n$',end='')
                     Money = Get_input_float()
                 else:
                     break
-            
+
             else:
-                print('Continue:1 Finish:2')
+                print('Do you want to continue? [Y/n] ',end='')
                 Continue_or_Finish = input()
-                while re.search(r'[1|2]',Continue_or_Finish.lower()) == None and re.search(r'[.*?yes.*?|.*?no.*?|.*?continue.*?|.*?fin.*?]',Continue_or_Finish.lower()) == None:
-                    print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nContinue:1 Finish:2")
+                while re.search(r'[.*?y.*?|.*?n.*?]',Continue_or_Finish.lower()) == None:
+                    print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ",end='')
                     Continue_or_Finish = input()
-                if Continue_or_Finish == 2 or re.search(r'[.*?no.*?|.*?fin.*?]',Continue_or_Finish.lower()) != None:
-                    break     
-        if Continue_or_Finish == 2 or re.search(r'[.*?no.*?|.*?fin.*?]',Continue_or_Finish.lower()) != None:
+                if Continue_or_Finish == 2 or re.search(r'[.*?n.*?]',Continue_or_Finish.lower()) != None:
+                    break
+        if Continue_or_Finish == 2 or re.search(r'[.*?n.*?]',Continue_or_Finish.lower()) != None:
             break
         pass
 
