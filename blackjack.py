@@ -96,8 +96,6 @@ def main():
                 print('Please bet again.\n$',end='')
                 Bet = Get_input_float()
 
-            Count = 0
-
             for i in range(2):
 
                 Computer_Cards.extend(Cards.Draw(Deck))
@@ -105,8 +103,6 @@ def main():
 
                 Player_Cards.extend(Cards.Draw(Deck))
                 Hit_Card(Player_Cards,Player_Data)
-
-                Count += 1
 
             Open_Card(Player_Cards,Player_Data[0],Player)
 
@@ -143,8 +139,6 @@ def main():
                         Player_Hit = 1
 
                 print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
-
-                Count += 1
 
             Open_Card(Player_Cards,Player_Data[0],Player)
             Open_Card(Computer_Cards,Computer_Data[0],Computer)
