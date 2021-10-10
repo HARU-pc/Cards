@@ -51,8 +51,7 @@ def Hit_Card(Cards,Data):
         return
 
 def Get_Game_data():
-    Game_data = {"money":0,"win":0,"lose":0,"draw":0,"game over":0,"lound":0}
-    return Game_data
+    return {"money":0,"win":0,"lose":0,"draw":0,"game over":0,"lound":0}
 
 def main():
 
