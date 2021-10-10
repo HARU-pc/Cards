@@ -62,7 +62,7 @@ try:
     Lose = 1
     Draw = 2
 
-    Game_data = {"money":0,"win":0,"lose":0,"draw":0}
+    Game_data = {"money":0,"win":0,"lose":0,"draw":0,"game over":0}
 
     while True:
 
@@ -194,6 +194,7 @@ try:
             print(f'Your Money:{Game_data["money"]}\n')
 
             if Game_data['money'] <= 0:
+                Game_data['game over'] += 1
                 print('GAME OVER\nDo you want to continue? [Y/n] ',end='')
                 Check_Retry = input()
                 while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
