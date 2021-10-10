@@ -62,23 +62,20 @@ try:
     Lose = 1
     Draw = 2
 
+    Game_data = {"money":0,"win":0,"lose":0,"draw":0}
+
     while True:
 
         Num = 0
         Card = 0
-        Money = 0
 
         print("BLACK JACK\nLet's enjoy\n\n")
 
         print('How much money do you have?\n$',end='')
-        Money = Get_input_float()
+        Game_data['money'] = Get_input_float()
 
         Loop = 0
         Lound = 0
-
-        Player_Win_counter = 0
-        Computer_Win_counter = 0
-        Draw_counter = 0
 
         Win_or_Lose = 0
 
@@ -95,11 +92,11 @@ try:
             Deck = Cards.Reset()
             Cards.Shuffle(Deck)
 
-            print(f'LOUND:{Lound}\n\nYour money:${Money}\n')
+            print(f'LOUND:{Lound}\n\nYour money:${Game_data["money"]}\n')
 
             print('Please bet.\n$',end='')
             Bet = Get_input_float()
-            while Bet > Money or Bet <= 0:
+            while Game_data['money'] < Bet or Bet <= 0:
                 print('Please bet again.\n$',end='')
                 Bet = Get_input_float()
 
@@ -162,40 +159,41 @@ try:
 
             if Player_Data[0] > 21:
                 print("YOU'RE BURSTED!!\n\nYou lose")
-                Computer_Win_counter += 1
+                Game_data['lose'] += 1
                 Win_or_Lose = Lose
                 if Computer_Data[0] > 21:
                     print('Computer is BURSTED too!!')
 
             elif Computer_Data[0] > 21:
                 print('Computer is BURSTED!!\nYou win!!!!')
-                Player_Win_counter += 1
+                Game_data['win'] += 1
                 Win_or_Lose = Win
 
             elif Computer_Data[0] < Player_Data[0]:
                 print('You win!!!!')
-                Player_Win_counter += 1
+                Game_data['win'] += 1
                 Win_or_Lose = Win
 
             elif Player_Data[0] < Computer_Data[0]:
                 print('You lose')
-                Computer_Win_counter += 1
+                Game_data['lose'] += 1
                 Win_or_Lose = Lose
 
             else:
                 print('Draw')
+                Game_data['draw'] += 1
                 Win_or_Lose = Draw
 
             if Win_or_Lose == Win:
-                Money += Bet
+                Game_data['money'] += Bet
             elif Win_or_Lose == Lose:
-                Money -= Bet
+                Game_data['money'] -= Bet
 
-            print(f'win:{Player_Win_counter} lose:{Computer_Win_counter} Draw:{Draw_counter}')
+            print(f'\nwin:{Game_data["win"]} lose:{Game_data["lose"]} Draw:{Game_data["draw"]}')
 
-            print(f'Your Money:{Money}\n')
+            print(f'Your Money:{Game_data["money"]}\n')
 
-            if Money <= 0:
+            if Game_data['money'] <= 0:
                 print('GAME OVER\nDo you want to continue? [Y/n] ',end='')
                 Check_Retry = input()
                 while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
