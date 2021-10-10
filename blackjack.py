@@ -147,7 +147,6 @@ try:
                     Open_Card(Player_Cards,Player_Data[0],Player)
 
                     if Player_Data[0] > 21:
-                        print("YOU'RE BURSTED!!\n\nYou lose\n")
                         Player_Hit = 1
 
                 print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
@@ -157,7 +156,12 @@ try:
             Open_Card(Player_Cards,Player_Data[0],Player)
             Open_Card(Computer_Cards,Computer_Data[0],Computer)
 
+            if Player_Data[0] == 21 and len(Player_Cards) == 2:
+                print('Black Jack!!')
+                Bet += int(Bet / 2)
+
             if Player_Data[0] > 21:
+                print("YOU'RE BURSTED!!\n\nYou lose")
                 Computer_Win_counter += 1
                 Win_or_Lose = Lose
                 if Computer_Data[0] > 21:
@@ -182,14 +186,12 @@ try:
                 print('Draw')
                 Win_or_Lose = Draw
 
-            if Player_Data[0] == 21 and len(Player_Cards) == 2:
-                Bet += int(Bet / 2)
-
             if Win_or_Lose == Win:
                 Money += Bet
             elif Win_or_Lose == Lose:
                 Money -= Bet
 
+            print(f'win:{Player_Win_counter} lose:{Computer_Win_counter} Draw:{Draw_counter}')
 
             print(f'Your Money:{Money}\n')
 
