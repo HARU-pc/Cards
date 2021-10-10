@@ -55,13 +55,6 @@ def Get_Game_data():
 
 def main():
 
-    Computer = 1
-    Player = 0
-
-    Win = 0
-    Lose = 1
-    Draw = 2
-
     Game_data = Get_Game_data()
 
     while True:
@@ -104,7 +97,7 @@ def main():
                 Player_Cards.extend(Cards.Draw(Deck))
                 Hit_Card(Player_Cards,Player_Data)
 
-            Open_Card(Player_Cards,Player_Data[0],Player)
+            Open_Card(Player_Cards,Player_Data[0],PLAYER)
 
             print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
@@ -133,52 +126,52 @@ def main():
                     Player_Cards.extend(Cards.Draw(Deck))
                     Hit_Card(Player_Cards,Player_Data)
 
-                    Open_Card(Player_Cards,Player_Data[0],Player)
+                    Open_Card(Player_Cards,Player_Data[0],PLAYER)
 
                     if Player_Data[0] > 21:
                         Player_Hit = 1
 
                 print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
-            Open_Card(Player_Cards,Player_Data[0],Player)
-            Open_Card(Computer_Cards,Computer_Data[0],Computer)
+            Open_Card(Player_Cards,Player_Data[0],PLAYER)
+            Open_Card(Computer_Cards,Computer_Data[0],COMPUTER)
 
             if Player_Data[0] == 21 and len(Player_Cards) == 2:
                 print('Black Jack!!\nYou win!!!!')
                 Bet += int(Bet / 2)
                 Game_data['win'] += 1
-                Win_or_Lose = Win
+                Win_or_Lose = WIN
 
             elif Player_Data[0] > 21:
                 print("YOU'RE BURSTED!!\n\nYou lose")
                 Game_data['lose'] += 1
-                Win_or_Lose = Lose
+                Win_or_Lose = LOSE
                 if Computer_Data[0] > 21:
                     print('Computer is BURSTED too!!')
 
             elif Computer_Data[0] > 21:
                 print('Computer is BURSTED!!\nYou win!!!!')
                 Game_data['win'] += 1
-                Win_or_Lose = Win
+                Win_or_Lose = WIN
 
             elif Computer_Data[0] < Player_Data[0]:
                 print('You win!!!!')
                 Game_data['win'] += 1
-                Win_or_Lose = Win
+                Win_or_Lose = WIN
 
             elif Player_Data[0] < Computer_Data[0]:
                 print('You lose')
                 Game_data['lose'] += 1
-                Win_or_Lose = Lose
+                Win_or_Lose = LOSE
 
             else:
                 print('Draw')
                 Game_data['draw'] += 1
-                Win_or_Lose = Draw
+                Win_or_Lose = DRAW
 
-            if Win_or_Lose == Win:
+            if Win_or_Lose == WIN:
                 Game_data['money'] += Bet
-            elif Win_or_Lose == Lose:
+            elif Win_or_Lose == LOSE:
                 Game_data['money'] -= Bet
 
             print(f'\nwin:{Game_data["win"]} lose:{Game_data["lose"]} Draw:{Game_data["draw"]}')
@@ -212,6 +205,13 @@ def main():
             break
 
 try:
+
+    COMPUTER = 1
+    PLAYER = 0
+
+    WIN = 0
+    LOSE = 1
+    DRAW = 2
 
     main()
 
