@@ -1,4 +1,5 @@
 from my_module import Cards
+import re
 
 
 def Get_input_float():  #入力をfloatとして返す
@@ -34,37 +35,49 @@ def Open_Card(Cards,Sum,Player_or_Computer):
     print(f"TOTAL:{Sum}")
 
 
-def Hit_Card(Cards,Ace,Sum):
+def Hit_Card(Cards,Data):
 
         if Cards[-1][1] == 1:
-            Ace += 1
-        Sum += Cards[-1][1]
+            Data[0] += 11
+            Data[1] += 1
+        else:
+            if 10 < Cards[-1][1]:
+                Data[0] += 10
+            else:
+                Data[0] += Cards[-1][1]
 
-        while Sum > 21 and Ace > 0:
-            Sum -= 10
-            Ace -= 1
+
+        while Data[0] > 21 and Data[1] > 0:
+            Data[0] -= 10
+            Data[1] -= 1
 
         return
 
 
 try:
+    Computer = 1
+    Player = 0
+
+    Win = 0
+    Lose = 1
+    Draw = 2
     while True:
 
         Num = 0
         Card = 0
         Money = 0
 
-        print('BLACK JACK\nPlease enjoy\n\n')
+        print("BLACK JACK\nLet's enjoy\n\n")
 
-        print('How much?\n$ ',end='')
+        print('How much money do you have?\n$',end='')
         Money = Get_input_float()
 
         Loop = 0
         Lound = 0
 
-        Player_Win = 0
-        Computer_Win = 0
-        Draw = 0
+        Player_Win_counter = 0
+        Computer_Win_counter = 0
+        Draw_counter = 0
 
         Win_or_Lose = 0
 
@@ -72,22 +85,18 @@ try:
 
             Lound = Lound + 1
 
-            Computer = 1
-            Computer_Sum = 0
-            Computer_Ace = 0
             Computer_Cards = []
+            Computer_Data = [0,0]
 
-            Player = 0
-            Player_Sum = 0
-            Player_Ace = 0
             Player_Cards = []
+            Player_Data = [0,0]
 
             Deck = Cards.Reset()
             Cards.Shuffle(Deck)
 
-            print(f'LOUND:{Lound}\n\n$:{Money}\n')
+            print(f'LOUND:{Lound}\n\nYour money:${Money}\n')
 
-            print('Please bet.\n$ ',end='')
+            print('Please bet.\n$',end='')
             Bet = Get_input_float()
             while Bet > Money or Bet <= 0:
                 print('Please bet again.\n$',end='')
@@ -98,28 +107,28 @@ try:
             for i in range(2):
 
                 Computer_Cards.extend(Cards.Draw(Deck))
-                Computer_Sum += Computer_Cards[-1][1]
-                Hit_Card(Computer_Cards,Computer_Ace,Computer_Sum)
+                #Computer_Sum += Computer_Cards[-1][1]
+                Hit_Card(Computer_Cards,Computer_Data)
 
                 Player_Cards.extend(Cards.Draw(Deck))
-                Player_Sum += Player_Cards[-1][1]
-                Hit_Card(Player_Cards,Player_Ace,Player_Sum)
+                #Player_Sum += Player_Cards[-1][1]
+                Hit_Card(Player_Cards,Player_Data)
 
                 Count += 1
 
-            Open_Card(Player_Cards,Player_Sum,Player)
+            Open_Card(Player_Cards,Player_Data[0],Player)
 
             print(f'UPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
             Player_Hit = 0
-            while Player_Hit == 0 or Computer_Sum < 17:
+            while Player_Hit == 0 or Computer_Data[0] < 17:
 
-                if Computer_Sum < 17:
+                if Computer_Data[0] < 17:
 
-                    print('\nCOM HIT')
+                    print('\nComputer hit')
                     Computer_Cards.extend(Cards.Draw(Deck))
-                    Computer_Sum += Computer_Cards[-1][1]
-                    Hit_Card(Computer_Cards,Computer_Ace,Computer_Sum)
+                    #Computer_Sum += Computer_Cards[-1][1]
+                    Hit_Card(Computer_Cards,Computer_Data)
 
                 else:
                     print('Computer stand')
@@ -137,13 +146,13 @@ try:
                         continue
 
                     Player_Cards.extend(Cards.Draw(Deck))
-                    Player_Sum += Player_Cards[-1][1]
-                    Hit_Card(Player_Cards,Player_Ace,Player_Sum)
+                    #Player_Sum += Player_Cards[-1][1]
+                    Hit_Card(Player_Cards,Player_Data)
 
-                    Open_Card(Player_Cards,Player_Sum,Player)
+                    Open_Card(Player_Cards,Player_Data[0],Player)
 
-                    if Player_Sum > 21:
-                        print("YOU'RE BURSTED!!\n\nYOU LOSE!!\n")
+                    if Player_Data[0] > 21:
+                        print("YOU'RE BURSTED!!\n\nYou lose\n")
                         Player_Hit = 1
 
                 Count += 1
@@ -151,7 +160,67 @@ try:
                 print(f'UPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
 
-            pass
+            if Player_Data[0] > 21:
+                Computer_Win_counter += 1
+                Win_or_Lose = Lose
+                if Computer_Data[0] > 21:
+                    print('Computer is BURSTED too!!')
+
+            elif Computer_Data[0] > 21:
+                print('Computer is BURSTED!!\nYou win!!!!')
+                Player_Win_counter += 1
+                Win_or_Lose = Win
+
+            elif Computer_Data[0] < Player_Data[0]:
+                print('You win!!!!')
+                Player_Win_counter += 1
+                Win_or_Lose = Win
+
+            elif Player_Data[0] < Computer_Data[0]:
+                print('You lose')
+                Computer_Win_counter += 1
+                Win_or_Lose = Lose
+
+            else:
+                print('Draw')
+                Win_or_Lose = Draw
+
+            if Player_Data[0] == 21 and len(Player_Cards) == 2:
+                Bet += int(Bet / 2)
+
+            if Win_or_Lose == Win:
+                Money += Bet
+            elif Win_or_Lose == Lose:
+                Money -= Bet
+
+
+            print(f'Your Money:{Money}\n')
+
+            if Money <= 0:
+                print('GAME OVER\nWill you retry?  Yes:1 No:2')
+                Check_Retry = input()
+                while Check_Retry != 1|2 and Check_Retry.lower() != r'.*yes.*|.*no.*':
+                    print(f'ERROR:There is no {Check_Retry} in the choices.\nWill you retry?  Yes:1 No:2')
+                    Check_Retry = input()
+
+                if Check_Retry == 1 or Check_Retry.lower() == r'.*yes.*':
+                    Lound = 0
+                    print('\n\nHow much money do you have?\n$',end='')
+                    Money = Get_input_float()
+                else:
+                    break
+            
+            else:
+                print('Continue:1 Finish:2')
+                Continue_or_Finish = input()
+                while re.search(r'[1|2]',Continue_or_Finish.lower()) == None and re.search(r'[.*?yes.*?|.*?no.*?|.*?continue.*?|.*?fin.*?]',Continue_or_Finish.lower()) == None:
+                    print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nContinue:1 Finish:2")
+                    Continue_or_Finish = input()
+                if Continue_or_Finish == 2 or re.search(r'[.*?no.*?|.*?fin.*?]',Continue_or_Finish.lower()) != None:
+                    break     
+        if Continue_or_Finish == 2 or re.search(r'[.*?no.*?|.*?fin.*?]',Continue_or_Finish.lower()) != None:
+            break
+        pass
 
 except KeyboardInterrupt:
     pass
