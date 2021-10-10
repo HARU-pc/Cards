@@ -164,3 +164,6 @@ def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
     elif Overwrite_or_Create == 1:  #新規作成
         Resalt = np.random.permutation(Deck)
         return Resalt
+
+if __name__ == '__main__':
+    print('test')
