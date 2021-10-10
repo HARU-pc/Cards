@@ -8,8 +8,6 @@ import random
 
 ############################################################################################
 #山札を作成
-
-
 def Reset():  #list
 
     Deck = []
@@ -35,7 +33,6 @@ def Reset():  #list
 
     return Deck
 
-
 def Reset_np():  #Numpy配列
 
     Deck_np = np.array(Reset(), dtype=object)
@@ -45,8 +42,6 @@ def Reset_np():  #Numpy配列
 
 ############################################################################################
 #山札からNum枚カードを引く
-
-
 def Draw(Deck,Num = 1,Del = 0):  #list
 
     Resalt = []
@@ -65,7 +60,6 @@ def Draw(Deck,Num = 1,Del = 0):  #list
             Resalt.append(Deck[i])
 
         return Resalt
-
 
 def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
@@ -99,8 +93,6 @@ def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
 ############################################################################################
 #山札からNum枚ランダムにカードを引く
-
-
 def Draw_Random(Deck,Num = 1,Del = 0):  #list
 
     #random.seed()
@@ -116,7 +108,6 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #list
             del Deck[Choose_Card]
 
     return Resalt
-
 
 def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
@@ -142,8 +133,6 @@ def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
 ############################################################################################
 #山札をシャッフル
-
-
 def Shuffle(Deck,Overwrite_or_Create = 0):  #list
 
     if Overwrite_or_Create == 0:  #上書き ※破壊的メソッド
@@ -153,7 +142,6 @@ def Shuffle(Deck,Overwrite_or_Create = 0):  #list
     elif Overwrite_or_Create == 1:  #新規作成
         Resalt = random.sample(Deck,len(Deck))
         return Resalt
-
 
 def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
 
@@ -165,5 +153,8 @@ def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
         Resalt = np.random.permutation(Deck)
         return Resalt
 
+
+############################################################################################
+#テスト用
 if __name__ == '__main__':
     print('test')
