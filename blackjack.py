@@ -26,13 +26,13 @@ def Open_Card(Cards,Sum,Player_or_Computer):
 
     for i in list(range(0,len(Cards))):
         print(f"CARDS{i + 1}:{Cards[i][0]}{Cards[i][2]}")
+    print(f"TOTAL:{Sum}")
 
     if Player_or_Computer == 0:
         print(f"\nYou have {len(Cards)} cards.")
     elif Player_or_Computer == 1:
         print(f"\nComputer has {len(Cards)} cards.")
 
-    print(f"TOTAL:{Sum}")
 
 
 def Hit_Card(Cards,Data):
@@ -61,6 +61,7 @@ try:
     Win = 0
     Lose = 1
     Draw = 2
+
     while True:
 
         Num = 0
@@ -116,29 +117,27 @@ try:
 
             Open_Card(Player_Cards,Player_Data[0],Player)
 
-            print(f'UPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
+            print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
             Player_Hit = 0
             while Player_Hit == 0 or Computer_Data[0] < 17:
 
                 if Computer_Data[0] < 17:
-
                     print('\nComputer hit')
                     Computer_Cards.extend(Cards.Draw(Deck))
                     Hit_Card(Computer_Cards,Computer_Data)
 
                 else:
                     print('Computer stand')
-                    print(f'UPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
                 if Player_Hit == 0:
                     print("\nHIT:1 STAND(STAY):2")
-                    Hit_or_Stand = Get_input_float()
-                    while Hit_or_Stand != 1 and Hit_or_Stand != 2:
-                        print("HIT:1 STAND(STAY):2  !! 1 OR 2 !! ")
-                        Hit_or_Stand = Get_input_float()
+                    Hit_or_Stand = input()
+                    while re.search(r'[.*?hit.*?|.*?sta.*?|1|2]',Hit_or_Stand.lower()) == None:
+                        print("HIT:1 STAND(STAY):2")
+                        Hit_or_Stand = input()
 
-                    if Hit_or_Stand == 2:
+                    if re.search(r'[.*?sta.*?|2]',Hit_or_Stand.lower()) != None:
                         Player_Hit = 1
                         continue
 
@@ -151,9 +150,9 @@ try:
                         print("YOU'RE BURSTED!!\n\nYou lose\n")
                         Player_Hit = 1
 
-                Count += 1
+                print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
-                print(f'UPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
+                Count += 1
 
             Open_Card(Player_Cards,Player_Data[0],Player)
             Open_Card(Computer_Cards,Computer_Data[0],Computer)
@@ -197,11 +196,11 @@ try:
             if Money <= 0:
                 print('GAME OVER\nDo you want to continue? [Y/n] ',end='')
                 Check_Retry = input()
-                while re.search(r'[.*?y.*?|.*?n.*?]',Continue_or_Finish.lower()) == None:
+                while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
                     print(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ',end='')
                     Check_Retry = input()
 
-                if re.search(r'[.*?y.*?]',Continue_or_Finish.lower()) == 'y':
+                if re.search(r'[.*?y.*?|.*?0.*?]',Continue_or_Finish.lower()) == r'[y|1]':
                     Lound = 0
                     print('\n\nHow much money do you have?\n$',end='')
                     Money = Get_input_float()
@@ -211,12 +210,12 @@ try:
             else:
                 print('Do you want to continue? [Y/n] ',end='')
                 Continue_or_Finish = input()
-                while re.search(r'[.*?y.*?|.*?n.*?]',Continue_or_Finish.lower()) == None:
+                while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
                     print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ",end='')
                     Continue_or_Finish = input()
-                if Continue_or_Finish == 2 or re.search(r'[.*?n.*?]',Continue_or_Finish.lower()) != None:
+                if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
                     break
-        if Continue_or_Finish == 2 or re.search(r'[.*?n.*?]',Continue_or_Finish.lower()) != None:
+        if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
             break
         pass
 
