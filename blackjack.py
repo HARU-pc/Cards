@@ -32,7 +32,7 @@ def Open_Card(Cards,Sum,Player_or_Computer):
     elif Player_or_Computer == 1:
         print(f"\nComputer has {len(Cards)} cards.")
 
-    print(f"TOTAL:{Sum}")
+    print(f"TOTAL:{Sum}\n")
 
 
 def Hit_Card(Cards,Data):
@@ -155,6 +155,8 @@ try:
 
                 print(f'UPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
 
+            Open_Card(Player_Cards,Player_Data[0],Player)
+            Open_Card(Computer_Cards,Computer_Data[0],Computer)
 
             if Player_Data[0] > 21:
                 Computer_Win_counter += 1
