@@ -1,4 +1,7 @@
 PLAYING CARD with Python
 ====
+トランプで遊べるだけ
 
-# Cards
+# Requirement
+- Python3
+- - Numpy
