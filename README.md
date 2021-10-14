@@ -4,4 +4,4 @@ PLAYING CARD with Python
 
 # Requirement
 - Python3
-- - Numpy
+  - Numpy
