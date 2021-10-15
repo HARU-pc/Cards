@@ -1,6 +1,6 @@
 PLAYING CARD with Python
 ====
-トランプで遊べるだけ
+Just play with playing cards
 
 # Requirement
 - Python3
