@@ -5,3 +5,6 @@ PLAYING CARD with Python
 # Requirement
 - Python3
   - Numpy(If you want to use it)
+
+# Games
+- Black Jack
