@@ -77,6 +77,8 @@ def Prepare_New_Lound():
     Player_Cards = []
     Player_Data = [0,0]
 
+    Game_data['lound'] += 1
+
     Deck = Cards.Reset()
     Cards.Shuffle(Deck)
 
@@ -87,8 +89,6 @@ def Prepare_New_Lound():
     while Game_data['money'] < Bet or Bet <= 0:
         print('Please bet again.\n$',end='')
         Bet = Get_input_float()
-
-    Game_data['lound'] += 1
 
 def Play():
 
