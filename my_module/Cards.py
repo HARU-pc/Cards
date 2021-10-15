@@ -2,7 +2,11 @@
 #トランプゲーム作成用のモジュール (ジョーカーなし)
 ############################################################################################
 
-import numpy as np
+try:
+    import numpy as np
+except ModuleNotFoundError:
+    print('please run "pip install numpy" if you want to use Numpy')
+
 import random
 
 
