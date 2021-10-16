@@ -2,6 +2,70 @@ from my_module import Cards
 import re
 import sys
 
+class Character_Data:
+
+    def __init__(self,pc_or_npc) -> None:
+
+        if pc_or_npc == 0:
+
+            print('How much money do you have?\n$',end='')
+            money = Get_input_float()
+
+            self.money = money
+            self.now_score = {'win':0,'lose':0,'draw':0}
+            self.total_score = {'win':0,'lose':0,'draw':0}
+            self.game_over = 0
+            self.lound = 0
+            self.bet = None
+
+        self.sum = 0
+        self.ace = 0
+        self.cards = []
+
+        pass
+
+    def Open_Card(self,PC_or_NPC = 0):
+
+        if PC_or_NPC == 0:
+            print("\n\nYour Cards")
+        elif PC_or_NPC == 1:
+            print("\n\nComputer's Cards")
+
+        for i in list(range(0,len(self.cards))):
+            print(f"CARDS{i + 1}:{self.cards[i][0]}{self.cards[i][2]}")
+        print(f"TOTAL:{self.sum}")
+
+        if PC_or_NPC == 0:
+            print(f"\nYou have {len(self.cards)} cards.")
+        elif PC_or_NPC == 1:
+            print(f"\nComputer has {len(self.cards)} cards.")
+
+    def Hit_Card(self):
+
+        self.cards.extend(Cards.Draw(Deck))
+
+        if self.cards[-1][1] == 1:
+            self.sum += 11
+            self.ace += 1
+        else:
+            if 10 < self.cards[-1][1]:
+                self.sum += 10
+            else:
+                self.sum += self.cards[-1][1]
+
+
+        while self.sum > 21 and self.ace > 0:
+            self.sum -= 10
+            self.ace -= 1
+
+        return
+
+    def Show_Status(self,PC_or_NPC = 0):
+        if PC_or_NPC == 0:
+            print('{0[0]},{0[1]},{0[2]},{0[3]},{0[4]},{0[5]},{1}'.format([x for row in list(self.now_score.items()) for x in row],self.money))
+        return
+
+
 def Get_input_float():  #入力をfloatとして返す
 
     Input_phrase = input()
@@ -16,104 +80,66 @@ def Get_input_float():  #入力をfloatとして返す
 
     return Input_phrase
 
-def Open_Card(Cards,Sum,Player_or_Computer):
+def New_Game_or_Load_Data():
 
-    if Player_or_Computer == 0:
-        print("\n\nYour Cards")
-    elif Player_or_Computer == 1:
-        print("\n\nComputer's Cards")
+    global PC_Data,NPC_Data
 
-    for i in list(range(0,len(Cards))):
-        print(f"CARDS{i + 1}:{Cards[i][0]}{Cards[i][2]}")
-    print(f"TOTAL:{Sum}")
+    print('Create new Game:1\nLoad save data:2')
+    New_or_Load = input()
+    while re.search(r'[.*?new.*?|.*?create.*?|.*?load.*?|1|2]',New_or_Load.lower()) == None:
+        print(f'ERROR:There is no {New_or_Load} in the choices.\nCreate new Game:1\nLoad save data:2 ')
+        New_or_Load = input()
 
-    if Player_or_Computer == 0:
-        print(f"\nYou have {len(Cards)} cards.")
-    elif Player_or_Computer == 1:
-        print(f"\nComputer has {len(Cards)} cards.")
-
-def Hit_Card(Cards,Data):
-
-        if Cards[-1][1] == 1:
-            Data[0] += 11
-            Data[1] += 1
-        else:
-            if 10 < Cards[-1][1]:
-                Data[0] += 10
-            else:
-                Data[0] += Cards[-1][1]
-
-
-        while Data[0] > 21 and Data[1] > 0:
-            Data[0] -= 10
-            Data[1] -= 1
-
-        return
-
-def Get_Game_data():
-
-    global Game_data
-    Game_data = {"money":0,"win":0,"lose":0,"draw":0,"game over":0,"lound":0}
-
-    return
+    if re.search(r'[.*?new.*?|.*?create.*?|1]',New_or_Load.lower()) != None:
+        PC_Data = Character_Data(PC)
+        NPC_Data = Character_Data(NPC)
 
 def Prepare_New_Game():
 
-    global Game_data
+    global PC_Data,NPC_Data
 
     print("BLACK JACK\nLet's enjoy\n\n")
 
-    print('How much money do you have?\n$',end='')
-    Game_data['money'] = Get_input_float()
-
-    Game_data['lound'] = 0
+    PC_Data.lound = 0
+    NPC_Data.lound = 0
 
 def Prepare_New_Lound():
 
-    global Computer_Cards,Computer_Data,Player_Cards,Player_Data,Deck,Bet,Game_data
+    global PC_Data,NPC_Data,Deck
 
-    Computer_Cards = []
-    Computer_Data = [0,0]
-
-    Player_Cards = []
-    Player_Data = [0,0]
-
-    Game_data['lound'] += 1
+    PC_Data.lound += 1
 
     Deck = Cards.Reset()
     Cards.Shuffle(Deck)
 
-    print(f'\n\nLOUND:{Game_data["lound"]}\n\nYour money:${Game_data["money"]}\n')
+    print(f'\n\nLOUND:{PC_Data.lound}\n\nYour money:${PC_Data.money}\n')
 
     print('Please bet.\n$',end='')
-    Bet = Get_input_float()
-    while Game_data['money'] < Bet or Bet <= 0:
+    PC_Data.bet = Get_input_float()
+    while PC_Data.money < PC_Data.bet or PC_Data.bet <= 0:
         print('Please bet again.\n$',end='')
-        Bet = Get_input_float()
+        PC_Data.bet = Get_input_float()
 
 def Play():
 
-    global Computer_Cards,Computer_Data,Player_Cards,Player_Data,Deck
+    global PC_Data,NPC_Data,Deck
 
     for i in range(2):
 
-        Computer_Cards.extend(Cards.Draw(Deck))
-        Hit_Card(Computer_Cards,Computer_Data)
+        NPC_Data.Hit_Card()
 
-        Player_Cards.extend(Cards.Draw(Deck))
-        Hit_Card(Player_Cards,Player_Data)
+        PC_Data.Hit_Card()
 
-    Open_Card(Player_Cards,Player_Data[0],PLAYER)
+    PC_Data.Open_Card(PC)
 
-    print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
+    print(f'\nUPCARD:{NPC_Data.cards[0][0]}{NPC_Data.cards[0][2]}\nComputer has {len(NPC_Data.cards)} cards.')
 
     Player_Hit = 0
-    while Player_Hit == 0 or Computer_Data[0] < 17:
+    while Player_Hit == 0 or NPC_Data.sum < 17:
 
-        if Computer_Data[0] < 17:
+        if NPC_Data.sum < 17:
             print('\nComputer hit')
-            Computer_Cards.extend(Cards.Draw(Deck))
-            Hit_Card(Computer_Cards,Computer_Data)
+            NPC_Data.Hit_Card()
 
         else:
             print('Computer stand')
@@ -129,71 +155,74 @@ def Play():
                 Player_Hit = 1
                 continue
 
-            Player_Cards.extend(Cards.Draw(Deck))
-            Hit_Card(Player_Cards,Player_Data)
+            PC_Data.Hit_Card()
 
-            Open_Card(Player_Cards,Player_Data[0],PLAYER)
+            PC_Data.Open_Card(PC)
 
-            if Player_Data[0] > 21:
+            if PC_Data.sum > 21:
                 Player_Hit = 1
 
-        print(f'\nUPCARD:{Computer_Cards[0][0]}{Computer_Cards[0][2]}\nComputer has {len(Computer_Cards)} cards.')
+        print(f'\nUPCARD:{NPC_Data.cards[0][0]}{NPC_Data.cards[0][2]}\nComputer has {len(NPC_Data.cards)} cards.')
 
 def Resalt():
 
-    global Computer_Cards,Computer_Data,Player_Cards,Player_Data,Bet,Game_data
+    global PC_Data,NPC_Data
 
-    Open_Card(Player_Cards,Player_Data[0],PLAYER)
-    Open_Card(Computer_Cards,Computer_Data[0],COMPUTER)
+    PC_Data.Open_Card(PC)
+    NPC_Data.Open_Card(NPC)
 
-    if Player_Data[0] == 21 and len(Player_Cards) == 2:
+    if PC_Data.sum == 21 and len(PC_Data.cards) == 2:
         print('Black Jack!!\nYou win!!!!')
-        Bet += int(Bet / 2)
-        Game_data['win'] += 1
+        PC_Data.bet += int(PC_Data.bet / 2)
+        PC_Data.now_score['win'] += 1
+        PC_Data.total_score['win'] += 1
         Win_or_Lose = WIN
 
-    elif Player_Data[0] > 21:
+    elif PC_Data.sum > 21:
         print("YOU'RE BURSTED!!\n\nYou lose")
-        Game_data['lose'] += 1
+        PC_Data.now_score['lose'] += 1
+        PC_Data.total_score['lose'] += 1
         Win_or_Lose = LOSE
-        if Computer_Data[0] > 21:
+        if NPC_Data.sum > 21:
             print('Computer is BURSTED too!!')
 
-    elif Computer_Data[0] > 21:
+    elif NPC_Data.sum > 21:
         print('Computer is BURSTED!!\nYou win!!!!')
-        Game_data['win'] += 1
+        PC_Data.now_score['win'] += 1
+        PC_Data.total_score['win'] += 1
         Win_or_Lose = WIN
 
-    elif Computer_Data[0] < Player_Data[0]:
+    elif NPC_Data.sum < PC_Data.sum:
         print('You win!!!!')
-        Game_data['win'] += 1
+        PC_Data.now_score['win'] += 1
+        PC_Data.total_score['win'] += 1
         Win_or_Lose = WIN
 
-    elif Player_Data[0] < Computer_Data[0]:
+    elif PC_Data.sum < NPC_Data.sum:
         print('You lose')
-        Game_data['lose'] += 1
+        PC_Data.now_score['lose'] += 1
+        PC_Data.total_score['lose'] += 1
         Win_or_Lose = LOSE
 
     else:
         print('Draw')
-        Game_data['draw'] += 1
+        PC_Data.now_score['draw'] += 1
+        PC_Data.total_score['draw'] += 1
         Win_or_Lose = DRAW
 
     if Win_or_Lose == WIN:
-        Game_data['money'] += Bet
+        PC_Data.money += PC_Data.bet
     elif Win_or_Lose == LOSE:
-        Game_data['money'] -= Bet
+        PC_Data.money -= PC_Data.bet
 
-    print(f'\nwin:{Game_data["win"]} lose:{Game_data["lose"]} Draw:{Game_data["draw"]}')
-
-    print(f'Your Money:{Game_data["money"]}\n')
+    PC_Data.Show_Status(PC)
 
 def Check_Game_Over():
 
-    global Game_data
+    global PC_Data,Check_Retry
 
-    if Game_data['money'] <= 0:
-        Game_data['game over'] += 1
+    if PC_Data.money <= 0:
+        PC_Data.game_over += 1
         print('GAME OVER\nDo you want to continue? [Y/n] ',end='')
         Check_Retry = input()
         while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
@@ -201,9 +230,11 @@ def Check_Game_Over():
             Check_Retry = input()
 
         if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
+            print('How much money do you have?\n$',end='')
+            PC_Data.money = Get_input_float()
             main()
         else:
-            sys.exi()
+            sys.exit()
 
 def Check_Continue():
     print('Do you want to continue? [Y/n] ',end='')
@@ -212,15 +243,16 @@ def Check_Continue():
         print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ",end='')
         Continue_or_Finish = input()
     if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
-        sys.exi()
+        sys.exit()
 
 def main():
 
-    Get_Game_data()
+    New_Game_or_Load_Data()
 
     while True:
 
-        Prepare_New_Game()
+        if Check_Retry == None:
+            Prepare_New_Game()
 
         while True:
 
@@ -238,20 +270,17 @@ if __name__ == '__main__':
 
     try:
 
-        COMPUTER = 1
-        PLAYER = 0
+        NPC = 1
+        PC = 0
 
         WIN = 0
         LOSE = 1
         DRAW = 2
 
-        Game_data = None
-        Computer_Cards = None
-        Computer_Data = None
-        Player_Cards = None
-        Player_Data = None
-        Deck = None
-        Bet = None
+        PC_Data = None
+        NPC_Data = None
+
+        Check_Retry = None
 
         main()
 
