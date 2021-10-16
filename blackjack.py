@@ -1,5 +1,6 @@
 from my_module import Cards
 import re
+import sys
 
 def Get_input_float():  #入力をfloatとして返す
 
@@ -202,7 +203,7 @@ def Check_Game_Over():
         if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
             main()
         else:
-            raise KeyboardInterrupt
+            sys.exi()
 
 def Check_Continue():
     print('Do you want to continue? [Y/n] ',end='')
@@ -211,7 +212,7 @@ def Check_Continue():
         print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ",end='')
         Continue_or_Finish = input()
     if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
-        raise KeyboardInterrupt
+        sys.exi()
 
 def main():
 
