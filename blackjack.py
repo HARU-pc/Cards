@@ -1,7 +1,16 @@
 from my_module import Cards
 import re
+import os
 import sys
+import hashlib
+import pickle
 
+class Save_Data:
+    def __init__(self,name,passwd) -> None:
+        self.name = name
+        self.passwd = passwd
+        self.PC_Data_for_save = Character_Data(PC)
+        self.NPC_Data_for_save = Character_Data(NPC)
 class Character_Data:
 
     def __init__(self,pc_or_npc) -> None:
@@ -62,8 +71,83 @@ class Character_Data:
 
     def Show_Status(self,PC_or_NPC = 0):
         if PC_or_NPC == 0:
-            print('{0[0]},{0[1]},{0[2]},{0[3]},{0[4]},{0[5]},{1}'.format([x for row in list(self.now_score.items()) for x in row],self.money))
+            print('{0[0]}:{0[1]} {0[2]}:{0[3]} {0[4]}:{0[5]}\nYour money:${1}'.format([x for row in list(self.now_score.items()) for x in row],self.money))
         return
+
+def Saving_Data():
+
+    if not os.path.isdir("data/blackjack"):
+        os.makedirs("data/blackjack")
+
+    if Game_Data != None:
+            with open(f"data/blackjack/{Game_Data.name}.pkl","wb") as f:
+                pickle.dump(Game_Data, f)
+    return
+
+def Create_new_user():
+
+    global Game_Data
+
+    while True:
+        print('New user name:',end='')
+        Name = input()
+
+        if not os.path.isfile(f"data/blackjack/{Name}.pkl"):
+            break
+        else:
+            print("The user `haru' already exists.")
+            main()
+
+    while True:
+        print('New Password:',end='')
+        Passwd = hashlib.sha256(input().encode()).hexdigest()
+        print('Retype new Password:',end='')
+        Passwd_Check = hashlib.sha256(input().encode()).hexdigest()
+        if Passwd == Passwd_Check:
+            Passwd = None
+            Passwd_Check = None
+            break
+        else:
+            print('Sorry, passwords do not match.')
+            print('Try again? [y/N]',end='')
+            Check_Retry = input()
+            while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
+                print(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ',end='')
+                Check_Retry = input()
+            if re.search(r'[.*?y.*?|1]',Check_Retry.lower()) == None:
+                sys.exit()
+
+    Game_Data = Save_Data(Name,Passwd)
+
+def Load_Data():
+
+    global Game_Data
+
+    while True:
+        print('User name:',end='')
+        Name = input()
+
+        if os.path.isfile(f"data/blackjack/{Name}.pkl"):
+            break
+        else:
+            print("The user `haru' doesn't exists.")
+            main()
+
+    with open(f"data/blackjack/{Name}.pkl", "rb") as f:
+        Game_Data = pickle.load(f)
+
+    for i in range(3):
+        print('Password:',end='')
+        Passwd = hashlib.sha256(input().encode()).hexdigest()
+        if Passwd == Game_Data.passwd:
+            break
+        elif i == 2:
+            print('3 incorrect password attempts')
+            Game_Data = None
+            main()
+        else:
+            print('Sorry, try again.')
+
 
 
 def Get_input_float():  #入力をfloatとして返す
@@ -80,19 +164,23 @@ def Get_input_float():  #入力をfloatとして返す
 
     return Input_phrase
 
-def New_Game_or_Load_Data():
+def New_User_or_Load_Data():
 
-    global PC_Data,NPC_Data
+    global PC_Data,NPC_Data,Game_Data
 
-    print('Create new Game:1\nLoad save data:2')
+    print('Create new user:1\nLoad save data:2')
     New_or_Load = input()
     while re.search(r'[.*?new.*?|.*?create.*?|.*?load.*?|1|2]',New_or_Load.lower()) == None:
         print(f'ERROR:There is no {New_or_Load} in the choices.\nCreate new Game:1\nLoad save data:2 ')
         New_or_Load = input()
 
     if re.search(r'[.*?new.*?|.*?create.*?|1]',New_or_Load.lower()) != None:
-        PC_Data = Character_Data(PC)
-        NPC_Data = Character_Data(NPC)
+        Create_new_user()
+    else:
+        Load_Data()
+
+    PC_Data = Game_Data.PC_Data_for_save
+    NPC_Data = Game_Data.NPC_Data_for_save
 
 def Prepare_New_Game():
 
@@ -223,7 +311,7 @@ def Check_Game_Over():
 
     if PC_Data.money <= 0:
         PC_Data.game_over += 1
-        print('GAME OVER\nDo you want to continue? [Y/n] ',end='')
+        print('GAME OVER\nDo you want to continue? [y/n] ',end='')
         Check_Retry = input()
         while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
             print(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ',end='')
@@ -237,7 +325,7 @@ def Check_Game_Over():
             sys.exit()
 
 def Check_Continue():
-    print('Do you want to continue? [Y/n] ',end='')
+    print('Do you want to continue? [y/n] ',end='')
     Continue_or_Finish = input()
     while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
         print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ",end='')
@@ -247,7 +335,7 @@ def Check_Continue():
 
 def main():
 
-    New_Game_or_Load_Data()
+    New_User_or_Load_Data()
 
     while True:
 
@@ -279,10 +367,16 @@ if __name__ == '__main__':
 
         PC_Data = None
         NPC_Data = None
+        Game_Data = None
 
         Check_Retry = None
 
         main()
 
     except KeyboardInterrupt:
+        Saving_Data()
+        pass
+
+    except BaseException:
+        Saving_Data()
         pass
