@@ -82,7 +82,6 @@ def Saving_Data():
     if Game_Data != None:
             with open(f"data/blackjack/{Game_Data.name}.pkl","wb") as f:
                 pickle.dump(Game_Data, f)
-    return
 
 def Create_new_user():
 
