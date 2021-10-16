@@ -370,6 +370,8 @@ if __name__ == '__main__':
 
         Check_Retry = None
 
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
         main()
 
     except KeyboardInterrupt:
