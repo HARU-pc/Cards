@@ -2,6 +2,8 @@ from my_module import Cards
 import re
 import os
 import sys
+import subprocess
+import platform
 import hashlib
 import pickle
 
@@ -17,10 +19,7 @@ class Character_Data:
 
         if pc_or_npc == 0:
 
-            print('How much money do you have?\n$',end='')
-            money = Get_input_float()
-
-            self.money = money
+            self.money = 10000
             self.now_score = {'win':0,'lose':0,'draw':0}
             self.total_score = {'win':0,'lose':0,'draw':0}
             self.game_over = 0
@@ -76,26 +75,50 @@ class Character_Data:
 
 def Saving_Data():
 
-    if not os.path.isdir("data/blackjack"):
-        os.makedirs("data/blackjack")
+    if platform.system() == 'Windows':
+        os.system('attrib -H /S /D .data')
+
+        if not os.path.isdir(".data/blackjack"):
+            os.makedirs(".data/blackjack")
+
+        os.system('attrib +H /S /D .data')
+    else:
+        if not os.path.isdir(".data/blackjack"):
+            os.makedirs(".data/blackjack")
 
     if Game_Data != None:
-            with open(f"data/blackjack/{Game_Data.name}.pkl","wb") as f:
+            with open(f".data/blackjack/{Game_Data.name}.pkl","wb") as f:
                 pickle.dump(Game_Data, f)
 
 def Create_new_user():
 
     global Game_Data
 
-    while True:
-        print('New user name:',end='')
-        Name = input()
+    if platform.system() == 'Windows':
+        os.system('attrib -H /S /D .data')
 
-        if not os.path.isfile(f"data/blackjack/{Name}.pkl"):
-            break
-        else:
-            print("The user `haru' already exists.")
-            main()
+        while True:
+            print('New user name:',end='')
+            Name = input()
+
+            if not os.path.isfile(f".data/blackjack/{Name}.pkl"):
+                break
+            else:
+                print(f"The user `{Name}' already exists.")
+                main()
+
+        os.system('attrib +H /S /D .data')
+    else:
+        while True:
+            print('New user name:',end='')
+            Name = input()
+
+            if not os.path.isfile(f".data/blackjack/{Name}.pkl"):
+                break
+            else:
+                print(f"The user `{Name}' already exists.")
+                main()
+
 
     while True:
         print('New Password:',end='')
@@ -103,8 +126,6 @@ def Create_new_user():
         print('Retype new Password:',end='')
         Passwd_Check = hashlib.sha256(input().encode()).hexdigest()
         if Passwd == Passwd_Check:
-            Passwd = None
-            Passwd_Check = None
             break
         else:
             print('Sorry, passwords do not match.')
@@ -117,23 +138,44 @@ def Create_new_user():
                 sys.exit()
 
     Game_Data = Save_Data(Name,Passwd)
+    Passwd = None
+    Passwd_Check = None
 
 def Load_Data():
 
     global Game_Data
 
-    while True:
-        print('User name:',end='')
-        Name = input()
+    if platform.system() == 'Windows':
+        os.system('attrib -H /S /D .data')
 
-        if os.path.isfile(f"data/blackjack/{Name}.pkl"):
-            break
-        else:
-            print("The user `haru' doesn't exists.")
-            main()
+        while True:
+            print('User name:',end='')
+            Name = input()
 
-    with open(f"data/blackjack/{Name}.pkl", "rb") as f:
-        Game_Data = pickle.load(f)
+            if os.path.isfile(f".data/blackjack/{Name}.pkl"):
+                break
+            else:
+                print(f"The user `{Name}' doesn't exists.")
+                main()
+
+        with open(f".data/blackjack/{Name}.pkl", "rb") as f:
+            Game_Data = pickle.load(f)
+
+        os.system('attrib +H /S /D .data')
+    else:
+
+        while True:
+            print('User name:',end='')
+            Name = input()
+
+            if os.path.isfile(f".data/blackjack/{Name}.pkl"):
+                break
+            else:
+                print(f"The user `{Name}' doesn't exists.")
+                main()
+
+        with open(f".data/blackjack/{Name}.pkl", "rb") as f:
+            Game_Data = pickle.load(f)
 
     for i in range(3):
         print('Password:',end='')
@@ -310,6 +352,7 @@ def Check_Game_Over():
 
     if PC_Data.money <= 0:
         PC_Data.game_over += 1
+        PC_Data.money = 10000
         print('GAME OVER\nDo you want to continue? [y/n] ',end='')
         Check_Retry = input()
         while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
@@ -317,8 +360,6 @@ def Check_Game_Over():
             Check_Retry = input()
 
         if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
-            print('How much money do you have?\n$',end='')
-            PC_Data.money = Get_input_float()
             main()
         else:
             sys.exit()
