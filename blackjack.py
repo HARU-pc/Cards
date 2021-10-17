@@ -153,6 +153,7 @@ def Load_Data():
 
     for i in range(3):
         Passwd = hashlib.sha256(input('Password:').encode()).hexdigest()
+
         if Passwd == Game_Data.passwd:
             break
         elif i == 2:
