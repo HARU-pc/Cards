@@ -334,13 +334,13 @@ def Check_Game_Over():
 
 def Check_Continue():
 
+    Game_Data.index = 2
+
     Continue_or_Finish = input('Do you want to continue? [y/n] ')
     while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
         Continue_or_Finish = input(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ")
     if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
         sys.exit()
-
-    Game_Data.index = 2
 
 def main():
 
