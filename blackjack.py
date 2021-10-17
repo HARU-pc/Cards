@@ -79,7 +79,7 @@ def Saving_Data():
         os.makedirs(".data/blackjack")
 
     if platform.system() == 'Windows':
-        os.system('attrib +H /S /D .data')
+        subprocess.Popen(['attrib','+H','.data'],shell=True)
 
     if Game_Data != None:
             with open(f".data/blackjack/{Game_Data.name}.pkl","wb") as f:
