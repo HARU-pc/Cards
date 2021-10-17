@@ -75,16 +75,9 @@ class Character_Data:
 
 def Saving_Data():
 
-    if platform.system() == 'Windows':
-        os.system('attrib -H /S /D .data')
-
-        if not os.path.isdir(".data/blackjack"):
-            os.makedirs(".data/blackjack")
-
+    if not os.path.isdir(".data/blackjack"):
+        os.makedirs(".data/blackjack")
         os.system('attrib +H /S /D .data')
-    else:
-        if not os.path.isdir(".data/blackjack"):
-            os.makedirs(".data/blackjack")
 
     if Game_Data != None:
             with open(f".data/blackjack/{Game_Data.name}.pkl","wb") as f:
@@ -94,31 +87,15 @@ def Create_new_user():
 
     global Game_Data
 
-    if platform.system() == 'Windows':
-        os.system('attrib -H /S /D .data')
+    while True:
+        print('New user name:',end='')
+        Name = input()
 
-        while True:
-            print('New user name:',end='')
-            Name = input()
-
-            if not os.path.isfile(f".data/blackjack/{Name}.pkl"):
-                break
-            else:
-                print(f"The user `{Name}' already exists.")
-                main()
-
-        os.system('attrib +H /S /D .data')
-    else:
-        while True:
-            print('New user name:',end='')
-            Name = input()
-
-            if not os.path.isfile(f".data/blackjack/{Name}.pkl"):
-                break
-            else:
-                print(f"The user `{Name}' already exists.")
-                main()
-
+        if not os.path.isfile(f".data/blackjack/{Name}.pkl"):
+            break
+        else:
+            print(f"The user `{Name}' already exists.")
+            main()
 
     while True:
         print('New Password:',end='')
@@ -145,37 +122,18 @@ def Load_Data():
 
     global Game_Data
 
-    if platform.system() == 'Windows':
-        os.system('attrib -H /S /D .data')
+    while True:
+        print('User name:',end='')
+        Name = input()
 
-        while True:
-            print('User name:',end='')
-            Name = input()
+        if os.path.isfile(f".data/blackjack/{Name}.pkl"):
+            break
+        else:
+            print(f"The user `{Name}' doesn't exists.")
+            main()
 
-            if os.path.isfile(f".data/blackjack/{Name}.pkl"):
-                break
-            else:
-                print(f"The user `{Name}' doesn't exists.")
-                main()
-
-        with open(f".data/blackjack/{Name}.pkl", "rb") as f:
-            Game_Data = pickle.load(f)
-
-        os.system('attrib +H /S /D .data')
-    else:
-
-        while True:
-            print('User name:',end='')
-            Name = input()
-
-            if os.path.isfile(f".data/blackjack/{Name}.pkl"):
-                break
-            else:
-                print(f"The user `{Name}' doesn't exists.")
-                main()
-
-        with open(f".data/blackjack/{Name}.pkl", "rb") as f:
-            Game_Data = pickle.load(f)
+    with open(f".data/blackjack/{Name}.pkl", "rb") as f:
+        Game_Data = pickle.load(f)
 
     for i in range(3):
         print('Password:',end='')
