@@ -1,4 +1,4 @@
-from my_module import Cards
+from module import Cards
 import re
 import os
 import sys
