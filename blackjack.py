@@ -11,19 +11,27 @@ class Save_Data:
     def __init__(self,name,passwd) -> None:
         self.name = name
         self.passwd = passwd
+        self.deck = None
+        self.lound = 0
+        self.index = None
         self.PC_Data_for_save = Character_Data(PC)
         self.NPC_Data_for_save = Character_Data(NPC)
+
+    def Reset(self):
+        self.PC_Data_for_save.Reset(PC)
+        self.NPC_Data_for_save.Reset(NPC)
+        self.deck = Cards.Reset()
+        Cards.Shuffle(self.deck)
 class Character_Data:
 
-    def __init__(self,pc_or_npc) -> None:
+    def __init__(self,PC_or_NPC = 0) -> None:
 
-        if pc_or_npc == 0:
+        if PC_or_NPC == 0:
 
             self.money = 10000
             self.now_score = {'win':0,'lose':0,'draw':0}
             self.total_score = {'win':0,'lose':0,'draw':0}
             self.game_over = 0
-            self.lound = 0
             self.bet = None
 
         self.sum = 0
@@ -31,6 +39,15 @@ class Character_Data:
         self.cards = []
 
         pass
+
+    def Reset(self,PC_or_NPC = 0):
+
+        if PC_or_NPC == 0:
+            self.bet = None
+
+        self.sum = 0
+        self.ace = 0
+        self.cards = []
 
     def Open_Card(self,PC_or_NPC = 0):
 
@@ -50,7 +67,9 @@ class Character_Data:
 
     def Hit_Card(self):
 
-        self.cards.extend(Cards.Draw(Deck))
+        global Game_Data
+
+        self.cards.extend(Cards.Draw(Game_Data.deck))
 
         if self.cards[-1][1] == 1:
             self.sum += 11
@@ -87,11 +106,10 @@ def Saving_Data():
 
 def Create_new_user():
 
-    global Game_Data
+    global PC_Data,NPC_Data,Game_Data
 
     while True:
-        print('New user name:',end='')
-        Name = input()
+        Name = input('\nNew user name:')
 
         if not os.path.isfile(f".data/blackjack/{Name}.pkl"):
             break
@@ -100,19 +118,16 @@ def Create_new_user():
             main()
 
     while True:
-        print('New Password:',end='')
-        Passwd = hashlib.sha256(input().encode()).hexdigest()
-        print('Retype new Password:',end='')
-        Passwd_Check = hashlib.sha256(input().encode()).hexdigest()
+        Passwd = hashlib.sha256(input('New Password:').encode()).hexdigest()
+        Passwd_Check = hashlib.sha256(input('Retype new Password:').encode()).hexdigest()
+
         if Passwd == Passwd_Check:
             break
         else:
             print('Sorry, passwords do not match.')
-            print('Try again? [y/N]',end='')
-            Check_Retry = input()
+            Check_Retry = input('Try again? [y/N]')
             while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
-                print(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ',end='')
-                Check_Retry = input()
+                Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ')
             if re.search(r'[.*?y.*?|1]',Check_Retry.lower()) == None:
                 sys.exit()
 
@@ -122,11 +137,10 @@ def Create_new_user():
 
 def Load_Data():
 
-    global Game_Data
+    global PC_Data,NPC_Data,Game_Data
 
     while True:
-        print('User name:',end='')
-        Name = input()
+        Name = input('\nUser name:')
 
         if os.path.isfile(f".data/blackjack/{Name}.pkl"):
             break
@@ -138,8 +152,7 @@ def Load_Data():
         Game_Data = pickle.load(f)
 
     for i in range(3):
-        print('Password:',end='')
-        Passwd = hashlib.sha256(input().encode()).hexdigest()
+        Passwd = hashlib.sha256(input('Password:').encode()).hexdigest()
         if Passwd == Game_Data.passwd:
             break
         elif i == 2:
@@ -151,7 +164,7 @@ def Load_Data():
 
 def Get_input_float():  #入力をfloatとして返す
 
-    Input_phrase = input()
+    Input_phrase = input('Input field:')
 
     while type(Input_phrase) == str:
 
@@ -159,7 +172,7 @@ def Get_input_float():  #入力をfloatとして返す
             Input_phrase = float(Input_phrase.replace(',',''))  #コロンを削除
         except ValueError:  #文字列がある場合再度入力を求める
             print("Please input numbers without letters")
-            Input_phrase = input()
+            Input_phrase = input('Input field:')
 
     return Input_phrase
 
@@ -167,11 +180,11 @@ def New_User_or_Load_Data():
 
     global PC_Data,NPC_Data,Game_Data
 
-    print('Create new user:1\nLoad save data:2')
-    New_or_Load = input()
+    print('\nCreate new user:1\nLoad save data:2')
+    New_or_Load = input('Input field:')
     while re.search(r'[.*?new.*?|.*?create.*?|.*?load.*?|1|2]',New_or_Load.lower()) == None:
-        print(f'ERROR:There is no {New_or_Load} in the choices.\nCreate new Game:1\nLoad save data:2 ')
-        New_or_Load = input()
+        print(f'\nERROR:There is no {New_or_Load} in the choices.\nCreate new Game:1\nLoad save data:2 ')
+        New_or_Load = input('Input field:')
 
     if re.search(r'[.*?new.*?|.*?create.*?|1]',New_or_Load.lower()) != None:
         Create_new_user()
@@ -183,39 +196,41 @@ def New_User_or_Load_Data():
 
 def Prepare_New_Game():
 
-    global PC_Data,NPC_Data
+    global PC_Data,NPC_Data,Game_Data
 
-    print("BLACK JACK\nLet's enjoy\n\n")
+    Game_Data.lound = 0
 
-    PC_Data.lound = 0
-    NPC_Data.lound = 0
+    Game_Data.index = 2
 
 def Prepare_New_Lound():
 
-    global PC_Data,NPC_Data,Deck
+    global PC_Data,NPC_Data,Game_Data
 
-    PC_Data.lound += 1
+    Game_Data.Reset()
 
-    Deck = Cards.Reset()
-    Cards.Shuffle(Deck)
+    if Game_Data.index == 2:
+        Game_Data.lound += 1
+        Game_Data.index = 3
 
-    print(f'\n\nLOUND:{PC_Data.lound}\n\nYour money:${PC_Data.money}\n')
+    print(f'\n\nLOUND:{Game_Data.lound}\n\nYour money:${PC_Data.money}\n')
 
     print('Please bet.\n$',end='')
     PC_Data.bet = Get_input_float()
     while PC_Data.money < PC_Data.bet or PC_Data.bet <= 0:
         print('Please bet again.\n$',end='')
         PC_Data.bet = Get_input_float()
+    Game_Data.index = 4
 
 def Play():
 
-    global PC_Data,NPC_Data,Deck
+    global PC_Data,NPC_Data,Game_Data
 
-    for i in range(2):
+    if Game_Data.index == 4:
+        for i in range(2):
+            NPC_Data.Hit_Card()
+            PC_Data.Hit_Card()
 
-        NPC_Data.Hit_Card()
-
-        PC_Data.Hit_Card()
+        Game_Data.index = 5
 
     PC_Data.Open_Card(PC)
 
@@ -233,10 +248,10 @@ def Play():
 
         if Player_Hit == 0:
             print("\nHIT:1 STAND(STAY):2")
-            Hit_or_Stand = input()
+            Hit_or_Stand = input('Input field:')
             while re.search(r'[.*?hit.*?|.*?sta.*?|1|2]',Hit_or_Stand.lower()) == None:
                 print("HIT:1 STAND(STAY):2")
-                Hit_or_Stand = input()
+                Hit_or_Stand = input('Input field:')
 
             if re.search(r'[.*?sta.*?|2]',Hit_or_Stand.lower()) != None:
                 Player_Hit = 1
@@ -250,6 +265,8 @@ def Play():
                 Player_Hit = 1
 
         print(f'\nUPCARD:{NPC_Data.cards[0][0]}{NPC_Data.cards[0][2]}\nComputer has {len(NPC_Data.cards)} cards.')
+
+    Game_Data.index = 6
 
 def Resalt():
 
@@ -306,45 +323,59 @@ def Resalt():
 
 def Check_Game_Over():
 
-    global PC_Data,Check_Retry
+    global PC_Data,Check_Retry,Game_Data,Index
 
     if PC_Data.money <= 0:
         PC_Data.game_over += 1
-        PC_Data.money = 10000
-        print('GAME OVER\nDo you want to continue? [y/n] ',end='')
-        Check_Retry = input()
+        PC_Data.money = float(10000 / int(10 ** PC_Data.game_over))
+        if PC_Data.money < 100:
+            print('You died.')
+            Game_Data = None
+            Index = 0
+        else:
+            Game_Data.index = 1
+        Check_Retry = input('GAME OVER\nDo you want to continue? [y/n] ')
         while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
-            print(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ',end='')
-            Check_Retry = input()
-
+            Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ')
         if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
             main()
         else:
             sys.exit()
 
 def Check_Continue():
-    print('Do you want to continue? [y/n] ',end='')
-    Continue_or_Finish = input()
+
+    Continue_or_Finish = input('Do you want to continue? [y/n] ')
     while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
-        print(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ",end='')
-        Continue_or_Finish = input()
+        Continue_or_Finish = input(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ")
     if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
         sys.exit()
 
+    Game_Data.index = 2
+
 def main():
 
-    New_User_or_Load_Data()
+    global Index
 
     while True:
 
-        if Check_Retry == None:
+        if Index == 0:
+            New_User_or_Load_Data()
+            Game_Data.index = 1 if Game_Data.index == None else Game_Data.index
+            Index = None
+
+        elif Game_Data.index == 1:
+            Game_Data.Reset()
             Prepare_New_Game()
 
-        while True:
+        elif Game_Data.index == 2 or Game_Data.index == 3:
 
             Prepare_New_Lound()
 
+        elif Game_Data.index == 4 or Game_Data.index == 5:
+
             Play()
+
+        elif Game_Data.index == 6:
 
             Resalt()
 
@@ -366,10 +397,13 @@ if __name__ == '__main__':
         PC_Data = None
         NPC_Data = None
         Game_Data = None
+        Index = 0
 
         Check_Retry = None
 
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+        print("♥♦BLACK JACK♠♣\nLet's enjoy\n")
 
         main()
 
