@@ -49,10 +49,6 @@ def Reset_np():  #Numpy配列
 #山札からNum枚カードを引く
 def Draw(Deck,Num = 1,Del = 0):  #list
 
-    if Numpy == DISABLE:
-        print('please run "pip install numpy" if you want to use Numpy')
-        return
-
     Resalt = []
 
     if Del == 0:
