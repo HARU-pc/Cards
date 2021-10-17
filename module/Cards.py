@@ -1,10 +1,11 @@
 ############################################################################################
 #トランプゲーム作成用のモジュール (ジョーカーなし)
 ############################################################################################
-
+DISABLE = 0
 try:
     import numpy as np
 except ModuleNotFoundError:
+    Numpy = DISABLE
     print('please run "pip install numpy" if you want to use Numpy')
 
 import random
@@ -48,6 +49,10 @@ def Reset_np():  #Numpy配列
 #山札からNum枚カードを引く
 def Draw(Deck,Num = 1,Del = 0):  #list
 
+    if Numpy == DISABLE:
+        print('please run "pip install numpy" if you want to use Numpy')
+        return
+
     Resalt = []
 
     if Del == 0:
@@ -66,6 +71,10 @@ def Draw(Deck,Num = 1,Del = 0):  #list
         return Resalt
 
 def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列
+
+    if Numpy == DISABLE:
+        print('please run "pip install numpy" if you want to use Numpy')
+        return
 
     Card_Data_list = []
     Deck_list = Deck_np.tolist()  #リストに変換
@@ -115,6 +124,10 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #list
 
 def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
+    if Numpy == DISABLE:
+        print('please run "pip install numpy" if you want to use Numpy')
+        return
+
     Card_Data_list = []
     Deck_list = Deck_np.tolist()  #リストに変換
 
@@ -148,6 +161,10 @@ def Shuffle(Deck,Overwrite_or_Create = 0):  #list
         return Resalt
 
 def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
+
+    if Numpy == DISABLE:
+        print('please run "pip install numpy" if you want to use Numpy')
+        return
 
     if Overwrite_or_Create == 0:  #上書き ※破壊的メソッド
         np.random.shuffle(Deck)
