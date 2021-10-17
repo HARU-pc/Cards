@@ -6,7 +6,7 @@ import subprocess
 import platform
 import hashlib
 import pickle
-import getpass
+from getpass import getpass
 
 class Save_Data:
     def __init__(self,name,passwd) -> None:
@@ -119,8 +119,8 @@ def Create_new_user():
             main()
 
     while True:
-        Passwd = hashlib.sha256(input('New Password:').encode()).hexdigest()
-        Passwd_Check = hashlib.sha256(input('Retype new Password:').encode()).hexdigest()
+        Passwd = hashlib.sha256(getpass(prompt='New Password:',stream=sys.stderr).encode()).hexdigest()
+        Passwd_Check = hashlib.sha256(getpass(prompt='Retype new Password:',stream=sys.stderr).encode()).hexdigest()
 
         if Passwd == Passwd_Check:
             break
@@ -153,7 +153,7 @@ def Load_Data():
         Game_Data = pickle.load(f)
 
     for i in range(3):
-        Passwd = hashlib.sha256(input('Password:').encode()).hexdigest()
+        Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
 
         if Passwd == Game_Data.passwd:
             break
