@@ -107,7 +107,7 @@ def Saving_Data():
 
 def Create_new_user():
 
-    global PC_Data,NPC_Data,Game_Data
+    global Game_Data
 
     while True:
         Name = input('\nNew user name:')
@@ -138,7 +138,7 @@ def Create_new_user():
 
 def Load_Data():
 
-    global PC_Data,NPC_Data,Game_Data
+    global Game_Data
 
     while True:
         Name = input('\nUser name:')
@@ -166,7 +166,7 @@ def Load_Data():
 
 def New_User_or_Load_Data():
 
-    global PC_Data,NPC_Data,Game_Data
+    global PC_Data,NPC_Data
 
     print('\nCreate new user:1\nLoad save data:2')
     New_or_Load = input('Input field:')
@@ -184,7 +184,7 @@ def New_User_or_Load_Data():
 
 def Prepare_New_Game():
 
-    global PC_Data,NPC_Data,Game_Data
+    global Game_Data
 
     Game_Data.lound = 0
 
@@ -192,7 +192,7 @@ def Prepare_New_Game():
 
 def Prepare_New_Lound():
 
-    global PC_Data,NPC_Data,Game_Data
+    global PC_Data,Game_Data
 
     Game_Data.Reset()
 
