@@ -6,6 +6,7 @@ import subprocess
 import platform
 import hashlib
 import pickle
+import getpass
 
 class Save_Data:
     def __init__(self,name,passwd) -> None:
