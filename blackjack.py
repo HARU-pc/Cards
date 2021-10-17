@@ -313,7 +313,7 @@ def Resalt():
 
 def Check_Game_Over():
 
-    global PC_Data,Check_Retry,Game_Data,Index
+    global PC_Data,Game_Data,Index
 
     if PC_Data.money <= 0:
         PC_Data.game_over += 1
@@ -324,7 +324,9 @@ def Check_Game_Over():
             Index = 0
         else:
             Game_Data.index = 1
+
         Check_Retry = input('GAME OVER\nDo you want to continue? [y/n] ')
+
         while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
             Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ')
         if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
@@ -376,10 +378,8 @@ def main():
 if __name__ == '__main__':
 
     try:
-
         NPC = 1
         PC = 0
-
         WIN = 0
         LOSE = 1
         DRAW = 2
@@ -388,8 +388,6 @@ if __name__ == '__main__':
         NPC_Data = None
         Game_Data = None
         Index = 0
-
-        Check_Retry = None
 
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
