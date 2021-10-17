@@ -149,8 +149,6 @@ def Load_Data():
         else:
             print('Sorry, try again.')
 
-
-
 def Get_input_float():  #入力をfloatとして返す
 
     Input_phrase = input()
