@@ -1,11 +1,11 @@
 ############################################################################################
 #トランプゲーム作成用のモジュール (ジョーカーなし)
 ############################################################################################
-DISABLE = 0
+Numpy = None
 try:
     import numpy as np
 except ModuleNotFoundError:
-    Numpy = DISABLE
+    Numpy = 0
     print('please run "pip install numpy" if you want to use Numpy')
 
 import random
@@ -40,6 +40,10 @@ def Reset():  #list
 
 def Reset_np():  #Numpy配列
 
+    if Numpy == 0:
+        print('please run "pip install numpy" if you want to use Numpy')
+        return
+
     Deck_np = np.array(Reset(), dtype=object)
 
     return Deck_np
@@ -68,7 +72,7 @@ def Draw(Deck,Num = 1,Del = 0):  #list
 
 def Draw_np(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
-    if Numpy == DISABLE:
+    if Numpy == 0:
         print('please run "pip install numpy" if you want to use Numpy')
         return
 
@@ -120,7 +124,7 @@ def Draw_Random(Deck,Num = 1,Del = 0):  #list
 
 def Draw_np_Random(Deck_np,Num = 1,Del = 0):  #Numpy配列
 
-    if Numpy == DISABLE:
+    if Numpy == 0:
         print('please run "pip install numpy" if you want to use Numpy')
         return
 
@@ -158,7 +162,7 @@ def Shuffle(Deck,Overwrite_or_Create = 0):  #list
 
 def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
 
-    if Numpy == DISABLE:
+    if Numpy == 0:
         print('please run "pip install numpy" if you want to use Numpy')
         return
 
@@ -175,3 +179,4 @@ def Shuffle_np(Deck,Overwrite_or_Create = 0):  #Numpy配列
 #テスト用
 if __name__ == '__main__':
     print('test')
+    print(Draw_np(Reset_np()))
