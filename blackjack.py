@@ -77,6 +77,8 @@ def Saving_Data():
 
     if not os.path.isdir(".data/blackjack"):
         os.makedirs(".data/blackjack")
+
+    if platform.system() == 'Windows':
         os.system('attrib +H /S /D .data')
 
     if Game_Data != None:
