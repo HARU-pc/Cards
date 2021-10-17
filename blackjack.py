@@ -162,20 +162,6 @@ def Load_Data():
         else:
             print('Sorry, try again.')
 
-def Get_input_float():  #入力をfloatとして返す
-
-    Input_phrase = input('Input field:')
-
-    while type(Input_phrase) == str:
-
-        try:
-            Input_phrase = float(Input_phrase.replace(',',''))  #コロンを削除
-        except ValueError:  #文字列がある場合再度入力を求める
-            print("Please input numbers without letters")
-            Input_phrase = input('Input field:')
-
-    return Input_phrase
-
 def New_User_or_Load_Data():
 
     global PC_Data,NPC_Data,Game_Data
@@ -214,11 +200,13 @@ def Prepare_New_Lound():
 
     print(f'\n\nLOUND:{Game_Data.lound}\n\nYour money:${PC_Data.money}\n')
 
-    print('Please bet.\n$',end='')
-    PC_Data.bet = Get_input_float()
-    while PC_Data.money < PC_Data.bet or PC_Data.bet <= 0:
-        print('Please bet again.\n$',end='')
-        PC_Data.bet = Get_input_float()
+    while PC_Data.bet == None or type(PC_Data.bet) == str or PC_Data.money < PC_Data.bet or PC_Data.bet <= 0:
+
+        try:
+            PC_Data.bet = float(input('Please bet:$').replace(',',''))  #コロンを削除
+        except ValueError:  #文字列がある場合再度入力を求める
+            print("Please input numbers without letters")
+
     Game_Data.index = 4
 
 def Play():
