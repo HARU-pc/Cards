@@ -196,9 +196,12 @@ def Prepare_New_Lound():
 
     Game_Data.Reset()
 
-    if Game_Data.index == 2:
-        Game_Data.lound += 1
-        Game_Data.index = 3
+    Game_Data.lound += 1
+    Game_Data.index = 3
+
+def Bet():
+
+    global PC_Data,Game_Data
 
     print(f'\n\nLOUND:{Game_Data.lound}\n\nYour money:${PC_Data.money}\n')
 
@@ -211,16 +214,19 @@ def Prepare_New_Lound():
 
     Game_Data.index = 4
 
-def Play():
+def Deal():
 
     global PC_Data,NPC_Data,Game_Data
 
-    if Game_Data.index == 4:
-        for i in range(2):
-            NPC_Data.Hit_Card()
-            PC_Data.Hit_Card()
+    for i in range(2):
+        NPC_Data.Hit_Card()
+        PC_Data.Hit_Card()
 
-        Game_Data.index = 5
+    Game_Data.index = 5
+
+def Play():
+
+    global PC_Data,NPC_Data,Game_Data
 
     PC_Data.Open_Card(PC)
 
@@ -359,11 +365,19 @@ def main():
             Game_Data.Reset()
             Prepare_New_Game()
 
-        elif Game_Data.index == 2 or Game_Data.index == 3:
+        elif Game_Data.index == 2:
 
             Prepare_New_Lound()
 
-        elif Game_Data.index == 4 or Game_Data.index == 5:
+        elif Game_Data.index == 3:
+
+            Bet()
+
+        elif Game_Data.index == 4:
+
+            Deal()
+
+        elif Game_Data.index == 5:
 
             Play()
 
