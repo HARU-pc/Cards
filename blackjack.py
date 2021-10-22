@@ -7,6 +7,7 @@ import platform
 import hashlib
 import pickle
 from getpass import getpass
+import cryptocode
 
 class Save_Data:
     def __init__(self,name,passwd) -> None:
@@ -23,6 +24,18 @@ class Save_Data:
         self.NPC_Data_for_save.Reset(NPC)
         self.deck = Cards.Reset()
         Cards.Shuffle(self.deck)
+
+    def Save(self):
+
+        if not os.path.isdir(".data/blackjack"):
+            os.makedirs(".data/blackjack")
+
+        if platform.system() == 'Windows':
+            subprocess.Popen(['attrib','+H','.data'],shell=True)
+
+        if self != None:
+                with open(f".data/blackjack/{self.name}.pkl","wb") as f:
+                    pickle.dump(self, f)
 class Character_Data:
 
     def __init__(self,PC_or_NPC = 0) -> None:
@@ -92,18 +105,6 @@ class Character_Data:
         if PC_or_NPC == 0:
             print('{0[0]}:{0[1]} {0[2]}:{0[3]} {0[4]}:{0[5]}\nYour money:${1}'.format([x for row in list(self.now_score.items()) for x in row],self.money))
         return
-
-def Saving_Data():
-
-    if not os.path.isdir(".data/blackjack"):
-        os.makedirs(".data/blackjack")
-
-    if platform.system() == 'Windows':
-        subprocess.Popen(['attrib','+H','.data'],shell=True)
-
-    if Game_Data != None:
-            with open(f".data/blackjack/{Game_Data.name}.pkl","wb") as f:
-                pickle.dump(Game_Data, f)
 
 def Create_new_user():
 
@@ -176,7 +177,7 @@ def New_User_or_Load_Data():
 
     if re.search(r'[.*?new.*?|.*?create.*?|1]',New_or_Load.lower()) != None:
         Create_new_user()
-    else:
+    elif re.search(r'[.*?load.*?|2]',New_or_Load.lower()) != None:
         Load_Data()
 
     PC_Data = Game_Data.PC_Data_for_save
@@ -410,9 +411,9 @@ if __name__ == '__main__':
         main()
 
     except KeyboardInterrupt:
-        Saving_Data()
+        Game_Data.Save()
         pass
 
     except BaseException:
-        Saving_Data()
+        Game_Data.Save()
         pass
