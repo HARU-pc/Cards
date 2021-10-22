@@ -1,4 +1,4 @@
-from module import Cards,my_aes
+from module import Cards,Aes
 import re
 import os
 import sys
@@ -35,7 +35,7 @@ class Save_Data:
         if self != None:
                 with open(f".data/blackjack/{self.name}.bin","wb") as f:
                     #pickle.dump(self, f)
-                    f.write(my_aes.encrypt(pickle.dumps(self), self.passwd))
+                    f.write(Aes.encrypt(pickle.dumps(self), self.passwd))
 
 class Character_Data:
 
@@ -156,7 +156,7 @@ def Load_Data():
 
         if i == 0:
             with open(f".data/blackjack/{Name}.bin", "rb") as f:
-                Game_Data = pickle.loads(my_aes.decrypt(f.read(), Passwd))
+                Game_Data = pickle.loads(Aes.decrypt(f.read(), Passwd))
 
         if Passwd == Game_Data.passwd:
             break
