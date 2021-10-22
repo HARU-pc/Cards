@@ -1,4 +1,4 @@
-from module import Cards
+from module import Cards,my_aes
 import re
 import os
 import sys
@@ -7,7 +7,6 @@ import platform
 import hashlib
 import pickle
 from getpass import getpass
-import cryptocode
 
 class Save_Data:
     def __init__(self,name,passwd) -> None:
@@ -34,8 +33,10 @@ class Save_Data:
             subprocess.Popen(['attrib','+H','.data'],shell=True)
 
         if self != None:
-                with open(f".data/blackjack/{self.name}.pkl","wb") as f:
-                    pickle.dump(self, f)
+                with open(f".data/blackjack/{self.name}.bin","wb") as f:
+                    #pickle.dump(self, f)
+                    f.write(my_aes.encrypt(pickle.dumps(self), self.passwd))
+
 class Character_Data:
 
     def __init__(self,PC_or_NPC = 0) -> None:
@@ -113,7 +114,7 @@ def Create_new_user():
     while True:
         Name = input('\nNew user name:')
 
-        if not os.path.isfile(f".data/blackjack/{Name}.pkl"):
+        if not os.path.isfile(f".data/blackjack/{Name}.bin"):
             break
         else:
             print(f"The user `{Name}' already exists.")
@@ -144,17 +145,18 @@ def Load_Data():
     while True:
         Name = input('\nUser name:')
 
-        if os.path.isfile(f".data/blackjack/{Name}.pkl"):
+        if os.path.isfile(f".data/blackjack/{Name}.bin"):
             break
         else:
             print(f"The user `{Name}' doesn't exists.")
             main()
 
-    with open(f".data/blackjack/{Name}.pkl", "rb") as f:
-        Game_Data = pickle.load(f)
-
     for i in range(3):
         Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
+
+        if i == 0:
+            with open(f".data/blackjack/{Name}.bin", "rb") as f:
+                Game_Data = pickle.loads(my_aes.decrypt(f.read(), Passwd))
 
         if Passwd == Game_Data.passwd:
             break
