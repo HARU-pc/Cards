@@ -5,7 +5,8 @@ import sys
 import subprocess
 import platform
 import hashlib
-import pickle
+#import pickle
+import dill as pickle
 from getpass import getpass
 
 class Save_Data:
@@ -34,9 +35,34 @@ class Save_Data:
 
         if self != None:
                 with open(f".data/blackjack/{self.name}.bin","wb") as f:
-                    #pickle.dump(self, f)
                     f.write(Aes.encrypt(pickle.dumps(self), self.passwd))
 
+    def Load(self):
+
+        while True:
+            Name = input('\nUser name:')
+
+            if os.path.isfile(f".data/blackjack/{Name}.bin"):
+                break
+            else:
+                print(f"The user `{Name}' doesn't exists.")
+                return 1
+
+        for i in range(3):
+            Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
+
+            if i == 0:
+                with open(f".data/blackjack/{Name}.bin", "rb") as f:
+                    self = pickle.loads(Aes.decrypt(f.read(), Passwd))
+
+            if Passwd == self.passwd:
+                break
+            elif i == 2:
+                print('3 incorrect password attempts')
+                self = None
+                return 1
+            else:
+                print('Sorry, try again.')
 class Character_Data:
 
     def __init__(self,PC_or_NPC = 0) -> None:
@@ -80,11 +106,9 @@ class Character_Data:
         elif PC_or_NPC == 1:
             print(f"\nComputer has {len(self.cards)} cards.")
 
-    def Hit_Card(self):
+    def Hit_Card(self,deck):
 
-        global Game_Data
-
-        self.cards.extend(Cards.Draw(Game_Data.deck))
+        self.cards.extend(Cards.Draw(deck))
 
         if self.cards[-1][1] == 1:
             self.sum += 11
@@ -125,8 +149,6 @@ class App:
 
     def Create_new_user(self):
 
-        global Game_Data
-
         while True:
             Name = input('\nNew user name:')
 
@@ -150,13 +172,11 @@ class App:
                 if re.search(r'[.*?y.*?|1]',Check_Retry.lower()) == None:
                     sys.exit()
 
-        Game_Data = Save_Data(Name,Passwd)
+        self.Game_Data = Save_Data(Name,Passwd)
         Passwd = None
         Passwd_Check = None
 
     def Load_Data(self):
-
-        global Game_Data
 
         while True:
             Name = input('\nUser name:')
@@ -167,25 +187,26 @@ class App:
                 print(f"The user `{Name}' doesn't exists.")
                 self.main()
 
+
         for i in range(3):
             Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
 
-            if i == 0:
-                with open(f".data/blackjack/{Name}.bin", "rb") as f:
-                    Game_Data = pickle.loads(Aes.decrypt(f.read(), Passwd))
+            with open(f".data/blackjack/{Name}.bin", "rb") as f:
+                try:
+                    self.Game_Data = pickle.loads(Aes.decrypt(f.read(), Passwd))
+                except NameError:
+                    self.Game_Data = 1
 
-            if Passwd == Game_Data.passwd:
+            if self.Game_Data.passwd == Passwd:
                 break
             elif i == 2:
                 print('3 incorrect password attempts')
-                Game_Data = None
+                self.Game_Data = None
                 self.main()
             else:
                 print('Sorry, try again.')
 
     def New_User_or_Load_Data(self):
-
-        global PC_Data,NPC_Data
 
         print('\nCreate new user:1\nLoad save data:2')
         New_or_Load = input('Input field:')
@@ -198,65 +219,55 @@ class App:
         elif re.search(r'[.*?load.*?|2]',New_or_Load.lower()) != None:
             self.Load_Data()
 
-        PC_Data = Game_Data.PC_Data_for_save
-        NPC_Data = Game_Data.NPC_Data_for_save
+        self.PC_Data = self.Game_Data.PC_Data_for_save
+        self.NPC_Data = self.Game_Data.NPC_Data_for_save
 
     def Prepare_New_Game(self):
 
-        global Game_Data
+        self.Game_Data.lound = 0
 
-        Game_Data.lound = 0
-
-        Game_Data.index = 2
+        self.Game_Data.index = 2
 
     def Prepare_New_Lound(self):
 
-        global PC_Data,Game_Data
+        self.Game_Data.Reset()
 
-        Game_Data.Reset()
-
-        Game_Data.lound += 1
-        Game_Data.index = 3
+        self.Game_Data.lound += 1
+        self.Game_Data.index = 3
 
     def Bet(self):
 
-        global PC_Data,Game_Data
+        print(f'\n\nLOUND:{self.Game_Data.lound}\n\nYour money:${self.PC_Data.money}\n')
 
-        print(f'\n\nLOUND:{Game_Data.lound}\n\nYour money:${PC_Data.money}\n')
-
-        while PC_Data.bet == None or type(PC_Data.bet) == str or PC_Data.money < PC_Data.bet or PC_Data.bet <= 0:
+        while self.PC_Data.bet == None or type(self.PC_Data.bet) == str or self.PC_Data.money < self.PC_Data.bet or self.PC_Data.bet <= 0:
 
             try:
-                PC_Data.bet = float(input('Please bet:$').replace(',',''))  #コロンを削除
+                self.PC_Data.bet = float(input('Please bet:$').replace(',',''))  #コロンを削除
             except ValueError:  #文字列がある場合再度入力を求める
                 print("Please input numbers without letters")
 
-        Game_Data.index = 4
+        self.Game_Data.index = 4
 
     def Deal(self):
 
-        global PC_Data,NPC_Data,Game_Data
-
         for i in range(2):
-            NPC_Data.Hit_Card()
-            PC_Data.Hit_Card()
+            self.NPC_Data.Hit_Card(self.Game_Data.deck)
+            self.PC_Data.Hit_Card(self.Game_Data.deck)
 
-        Game_Data.index = 5
+        self.Game_Data.index = 5
 
     def Play(self):
 
-        global PC_Data,NPC_Data,Game_Data
+        self.PC_Data.Open_Card(PC)
 
-        PC_Data.Open_Card(self.PC)
-
-        print(f'\nUPCARD:{NPC_Data.cards[0][0]}{NPC_Data.cards[0][2]}\nComputer has {len(NPC_Data.cards)} cards.')
+        print(f'\nUPCARD:{self.NPC_Data.cards[0][0]}{self.NPC_Data.cards[0][2]}\nComputer has {len(self.NPC_Data.cards)} cards.')
 
         Player_Hit = 0
-        while Player_Hit == 0 or NPC_Data.sum < 17:
+        while Player_Hit == 0 or self.NPC_Data.sum < 17:
 
-            if NPC_Data.sum < 17:
+            if self.NPC_Data.sum < 17:
                 print('\nComputer hit')
-                NPC_Data.Hit_Card()
+                self.NPC_Data.Hit_Card(self.Game_Data.deck)
 
             else:
                 print('Computer stand')
@@ -272,83 +283,79 @@ class App:
                     Player_Hit = 1
                     continue
 
-                PC_Data.Hit_Card()
+                self.PC_Data.Hit_Card(self.Game_Data.deck)
 
-                PC_Data.Open_Card(self.PC)
+                self.PC_Data.Open_Card(PC)
 
-                if PC_Data.sum > 21:
+                if self.PC_Data.sum > 21:
                     Player_Hit = 1
 
-            print(f'\nUPCARD:{NPC_Data.cards[0][0]}{NPC_Data.cards[0][2]}\nComputer has {len(NPC_Data.cards)} cards.')
+            print(f'\nUPCARD:{self.NPC_Data.cards[0][0]}{self.NPC_Data.cards[0][2]}\nComputer has {len(self.NPC_Data.cards)} cards.')
 
-        Game_Data.index = 6
+        self.Game_Data.index = 6
 
     def Resalt(self):
 
-        global PC_Data,NPC_Data
+        self.PC_Data.Open_Card(PC)
+        self.NPC_Data.Open_Card(NPC)
 
-        PC_Data.Open_Card(self.PC)
-        NPC_Data.Open_Card(self.NPC)
-
-        if PC_Data.sum == 21 and len(PC_Data.cards) == 2:
+        if self.PC_Data.sum == 21 and len(self.PC_Data.cards) == 2:
             print('Black Jack!!\nYou win!!!!')
-            PC_Data.bet += int(PC_Data.bet / 2)
-            PC_Data.now_score['win'] += 1
-            PC_Data.total_score['win'] += 1
-            Win_or_Lose = self.WIN
+            self.PC_Data.bet += int(self.PC_Data.bet / 2)
+            self.PC_Data.now_score['win'] += 1
+            self.PC_Data.total_score['win'] += 1
+            Win_or_Lose = WIN
 
-        elif PC_Data.sum > 21:
+        elif self.PC_Data.sum > 21:
             print("YOU'RE BURSTED!!\n\nYou lose")
-            PC_Data.now_score['lose'] += 1
-            PC_Data.total_score['lose'] += 1
-            Win_or_Lose = self.LOSE
-            if NPC_Data.sum > 21:
+            self.PC_Data.now_score['lose'] += 1
+            self.PC_Data.total_score['lose'] += 1
+            Win_or_Lose = LOSE
+            if self.NPC_Data.sum > 21:
                 print('Computer is BURSTED too!!')
 
-        elif NPC_Data.sum > 21:
+        elif self.NPC_Data.sum > 21:
             print('Computer is BURSTED!!\nYou win!!!!')
-            PC_Data.now_score['win'] += 1
-            PC_Data.total_score['win'] += 1
-            Win_or_Lose = self.WIN
+            self.PC_Data.now_score['win'] += 1
+            self.PC_Data.total_score['win'] += 1
+            Win_or_Lose = WIN
 
-        elif NPC_Data.sum < PC_Data.sum:
+        elif self.NPC_Data.sum < self.PC_Data.sum:
             print('You win!!!!')
-            PC_Data.now_score['win'] += 1
-            PC_Data.total_score['win'] += 1
-            Win_or_Lose = self.WIN
+            self.PC_Data.now_score['win'] += 1
+            self.PC_Data.total_score['win'] += 1
+            Win_or_Lose = WIN
 
-        elif PC_Data.sum < NPC_Data.sum:
+        elif self.PC_Data.sum < self.NPC_Data.sum:
             print('You lose')
-            PC_Data.now_score['lose'] += 1
-            PC_Data.total_score['lose'] += 1
-            Win_or_Lose = self.LOSE
+            self.PC_Data.now_score['lose'] += 1
+            self.PC_Data.total_score['lose'] += 1
+            Win_or_Lose = LOSE
 
         else:
             print('Draw')
-            PC_Data.now_score['draw'] += 1
-            PC_Data.total_score['draw'] += 1
-            Win_or_Lose = self.DRAW
+            self.PC_Data.now_score['draw'] += 1
+            self.PC_Data.total_score['draw'] += 1
+            Win_or_Lose = DRAW
 
-        if Win_or_Lose == self.WIN:
-            PC_Data.money += PC_Data.bet
-        elif Win_or_Lose == self.LOSE:
-            PC_Data.money -= PC_Data.bet
+        if Win_or_Lose == WIN:
+            self.PC_Data.money += self.PC_Data.bet
+        elif Win_or_Lose == LOSE:
+            self.PC_Data.money -= self.PC_Data.bet
 
-        PC_Data.Show_Status(self.PC)
+        self.PC_Data.Show_Status(PC)
 
     def Check_Game_Over(self):
 
-        global PC_Data,Game_Data,Index
-
-        if PC_Data.money <= 0:
-            PC_Data.game_over += 1
-            PC_Data.money = float(10000 / int(10 ** PC_Data.game_over))
-            if PC_Data.money < 100:
+        if self.PC_Data.money <= 0:
+            self.PC_Data.game_over += 1
+            self.PC_Data.money = float(10000 / int(10 ** self.PC_Data.game_over))
+            if self.PC_Data.money < 100:
                 print('You died.')
                 Game_Data = None
                 Index = 0
             else:
-                Game_Data.index = 1
+                self.Game_Data.index = 1
 
             Check_Retry = input('GAME OVER\nDo you want to continue? [y/n] ')
 
@@ -361,7 +368,7 @@ class App:
 
     def Check_Continue(self):
 
-        Game_Data.index = 2
+        self.Game_Data.index = 2
 
         Continue_or_Finish = input('Do you want to continue? [y/n] ')
         while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
@@ -375,30 +382,30 @@ class App:
 
             if self.Index == 0:
                 self.New_User_or_Load_Data()
-                Game_Data.index = 1 if Game_Data.index == None else Game_Data.index
+                self.Game_Data.index = 1 if self.Game_Data.index == None else self.Game_Data.index
                 self.Index = None
 
-            elif Game_Data.index == 1:
-                Game_Data.Reset()
+            elif self.Game_Data.index == 1:
+                self.Game_Data.Reset()
                 self.Prepare_New_Game()
 
-            elif Game_Data.index == 2:
+            elif self.Game_Data.index == 2:
 
                 self.Prepare_New_Lound()
 
-            elif Game_Data.index == 3:
+            elif self.Game_Data.index == 3:
 
                 self.Bet()
 
-            elif Game_Data.index == 4:
+            elif self.Game_Data.index == 4:
 
                 self.Deal()
 
-            elif Game_Data.index == 5:
+            elif self.Game_Data.index == 5:
 
                 self.Play()
 
-            elif Game_Data.index == 6:
+            elif self.Game_Data.index == 6:
 
                 self.Resalt()
 
@@ -421,9 +428,9 @@ if __name__ == '__main__':
         BlackJack.main()
 
     except KeyboardInterrupt:
-        Game_Data.Save()
+        BlackJack.Game_Data.Save()
         pass
 
     except BaseException:
-        Game_Data.Save()
+        BlackJack.Game_Data.Save()
         pass
