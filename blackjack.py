@@ -15,12 +15,12 @@ class Save_Data:
         self.deck = None
         self.lound = 0
         self.index = None
-        self.PC_Data_for_save = Character_Data(App.PC)
-        self.NPC_Data_for_save = Character_Data(App.NPC)
+        self.PC_Data_for_save = Character_Data(PC)
+        self.NPC_Data_for_save = Character_Data(NPC)
 
     def Reset(self):
-        self.PC_Data_for_save.Reset(App.PC)
-        self.NPC_Data_for_save.Reset(App.NPC)
+        self.PC_Data_for_save.Reset(PC)
+        self.NPC_Data_for_save.Reset(NPC)
         self.deck = Cards.Reset()
         Cards.Shuffle(self.deck)
 
@@ -109,13 +109,7 @@ class Character_Data:
 
 class App:
 
-    NPC = 1
-    PC = 0
-    WIN = 0
-    LOSE = 1
-    DRAW = 2
-
-    def __init__(self,PC_or_NPC = 0) -> None:
+    def __init__(self) -> None:
 
 
         self.PC_Data = None
@@ -128,7 +122,6 @@ class App:
         print("♥♦BLACK JACK♠♣\nLet's enjoy\n")
 
         self.main()
-
 
     def Create_new_user(self):
 
@@ -416,6 +409,13 @@ class App:
 if __name__ == '__main__':
 
     try:
+
+        NPC = 1
+        PC = 0
+
+        WIN = 0
+        LOSE = 1
+        DRAW = 2
 
         BlackJack = App()
         BlackJack.main()
