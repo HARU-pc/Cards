@@ -2,7 +2,6 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from Crypto import Random
 
-
 def create_aes(password, iv):
     sha = SHA256.new()
     sha.update(password.encode())
