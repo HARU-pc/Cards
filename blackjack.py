@@ -202,6 +202,8 @@ class App:
 
     def Prepare_New_Game(self):
 
+        self.Game_Data.Reset()
+
         self.Game_Data.lound = 0
 
         self.Game_Data.index = 2
@@ -364,7 +366,7 @@ class App:
                 self.Index = None
 
             elif self.Game_Data.index == 1:
-                self.Game_Data.Reset()
+
                 self.Prepare_New_Game()
 
             elif self.Game_Data.index == 2:
