@@ -5,7 +5,6 @@ import sys
 import subprocess
 import platform
 import hashlib
-#import pickle
 import dill
 from getpass import getpass
 
