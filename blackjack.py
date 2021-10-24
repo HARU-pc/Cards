@@ -6,7 +6,7 @@ import subprocess
 import platform
 import hashlib
 #import pickle
-import dill as pickle
+import dill
 from getpass import getpass
 
 class Save_Data:
@@ -35,7 +35,7 @@ class Save_Data:
 
         if self != None:
                 with open(f".data/blackjack/{self.name}.bin","wb") as f:
-                    f.write(Aes.encrypt(pickle.dumps(self), self.passwd))
+                    f.write(Aes.encrypt(dill.dumps(self), self.passwd))
 
     def Load(self):
 
@@ -53,7 +53,7 @@ class Save_Data:
 
             if i == 0:
                 with open(f".data/blackjack/{Name}.bin", "rb") as f:
-                    self = pickle.loads(Aes.decrypt(f.read(), Passwd))
+                    self = dill.loads(Aes.decrypt(f.read(), Passwd))
 
             if Passwd == self.passwd:
                 break
@@ -135,17 +135,11 @@ class App:
 
     def __init__(self) -> None:
 
-
-        self.PC_Data = None
-        self.NPC_Data = None
-        self.Game_Data = None
         self.Index = 0
 
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
         print("♥♦BLACK JACK♠♣\nLet's enjoy\n")
-
-        self.main()
 
     def Create_new_user(self):
 
@@ -193,11 +187,12 @@ class App:
 
             with open(f".data/blackjack/{Name}.bin", "rb") as f:
                 try:
-                    self.Game_Data = pickle.loads(Aes.decrypt(f.read(), Passwd))
-                except NameError:
+                    self.Game_Data = dill.loads(Aes.decrypt(f.read(), Passwd))
+                except dill.UnpicklingError:
                     self.Game_Data = 1
+                    pass
 
-            if self.Game_Data.passwd == Passwd:
+            if self.Game_Data != 1:
                 break
             elif i == 2:
                 print('3 incorrect password attempts')
@@ -427,10 +422,6 @@ if __name__ == '__main__':
         BlackJack = App()
         BlackJack.main()
 
-    except KeyboardInterrupt:
-        BlackJack.Game_Data.Save()
-        pass
-
-    except BaseException:
+    except (KeyboardInterrupt, BaseException):
         BlackJack.Game_Data.Save()
         pass
