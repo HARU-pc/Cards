@@ -9,7 +9,7 @@ import dill
 from getpass import getpass
 
 class Save_Data:
-    def __init__(self,name,passwd) -> None:
+    def __init__(self,name=None,passwd=None) -> None:
         self.name = name
         self.passwd = passwd
         self.deck = None
@@ -32,7 +32,7 @@ class Save_Data:
         if platform.system() == 'Windows':
             subprocess.Popen(['attrib','+H','.data'],shell=True)
 
-        if self != None:
+        if self.name != None:
                 with open(f".data/blackjack/{self.name}.bin","wb") as f:
                     f.write(Aes.encrypt(dill.dumps(self), self.passwd))
 
@@ -45,21 +45,26 @@ class Save_Data:
                 break
             else:
                 print(f"The user `{Name}' doesn't exists.")
-                return 1
+                BlackJack.main()
 
         for i in range(3):
             Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
 
-            if i == 0:
-                with open(f".data/blackjack/{Name}.bin", "rb") as f:
+            Pass_Check = 0
+            with open(f".data/blackjack/{Name}.bin", "rb") as f:
+                try:
                     self = dill.loads(Aes.decrypt(f.read(), Passwd))
+                except dill.UnpicklingError:
+                    Pass_Check = 1
+                    pass
 
-            if Passwd == self.passwd:
+            if Pass_Check != 1:
+                Pass_Check = 0
                 break
             elif i == 2:
                 print('3 incorrect password attempts')
                 self = None
-                return 1
+                BlackJack.main()
             else:
                 print('Sorry, try again.')
 class Character_Data:
@@ -171,34 +176,8 @@ class App:
 
     def Load_Data(self):
 
-        while True:
-            Name = input('\nUser name:')
-
-            if os.path.isfile(f".data/blackjack/{Name}.bin"):
-                break
-            else:
-                print(f"The user `{Name}' doesn't exists.")
-                self.main()
-
-
-        for i in range(3):
-            Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
-
-            with open(f".data/blackjack/{Name}.bin", "rb") as f:
-                try:
-                    self.Game_Data = dill.loads(Aes.decrypt(f.read(), Passwd))
-                except dill.UnpicklingError:
-                    self.Game_Data = 1
-                    pass
-
-            if self.Game_Data != 1:
-                break
-            elif i == 2:
-                print('3 incorrect password attempts')
-                self.Game_Data = None
-                self.main()
-            else:
-                print('Sorry, try again.')
+        self.Game_Data = Save_Data()
+        self.Game_Data.Load()
 
     def New_User_or_Load_Data(self):
 
