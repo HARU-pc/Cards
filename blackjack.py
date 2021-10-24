@@ -409,4 +409,5 @@ if __name__ == '__main__':
 
     except (KeyboardInterrupt, BaseException):
         BlackJack.Game_Data.Save()
+        print("Thank you for playing!!")
         pass
