@@ -68,6 +68,36 @@ class Save_Data:
 
         return Data
 
+    def creat():
+        while True:
+            Name = input('\nNew user name:')
+
+            if not os.path.isfile(f".data/blackjack/{Name}.bin"):
+                break
+            else:
+                print(f"The user `{Name}' already exists.")
+                BlackJack.main()
+
+        while True:
+            Passwd = hashlib.sha256(getpass(prompt='New Password:',stream=sys.stderr).encode()).hexdigest()
+            Passwd_Check = hashlib.sha256(getpass(prompt='Retype new Password:',stream=sys.stderr).encode()).hexdigest()
+
+            if Passwd == Passwd_Check:
+                break
+            else:
+                print('Sorry, passwords do not match.')
+                Check_Retry = input('Try again? [y/N]')
+                while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
+                    Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ')
+                if re.search(r'[.*?y.*?|1]',Check_Retry.lower()) == None:
+                    sys.exit()
+
+        Data = Save_Data(Name, Passwd)
+        Passwd = None
+        Passwd_Check = None
+
+        return Data
+
 class Character_Data:
 
     def __init__(self,PC_or_NPC = 0) -> None:
@@ -148,32 +178,7 @@ class App:
 
     def Create_new_user(self):
 
-        while True:
-            Name = input('\nNew user name:')
-
-            if not os.path.isfile(f".data/blackjack/{Name}.bin"):
-                break
-            else:
-                print(f"The user `{Name}' already exists.")
-                self.main()
-
-        while True:
-            Passwd = hashlib.sha256(getpass(prompt='New Password:',stream=sys.stderr).encode()).hexdigest()
-            Passwd_Check = hashlib.sha256(getpass(prompt='Retype new Password:',stream=sys.stderr).encode()).hexdigest()
-
-            if Passwd == Passwd_Check:
-                break
-            else:
-                print('Sorry, passwords do not match.')
-                Check_Retry = input('Try again? [y/N]')
-                while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
-                    Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ')
-                if re.search(r'[.*?y.*?|1]',Check_Retry.lower()) == None:
-                    sys.exit()
-
-        self.Game_Data = Save_Data(Name,Passwd)
-        Passwd = None
-        Passwd_Check = None
+        self.Game_Data = Save_Data.creat()
 
     def Load_Data(self):
 
