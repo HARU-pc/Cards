@@ -11,6 +11,7 @@ Just play with playing cards
     - pycryptodome
 - blackjack.py
   - Python3
+    - dill
   - module/Cards.py
     - Python3
   - module/Aes.py
