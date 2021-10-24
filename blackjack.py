@@ -332,8 +332,8 @@ class App:
             self.PC_Data.money = float(10000 / int(10 ** self.PC_Data.game_over))
             if self.PC_Data.money < 100:
                 print('You died.')
-                Game_Data = None
-                Index = 0
+                self.Game_Data = None
+                self.Index = 0
             else:
                 self.Game_Data.index = 1
 
