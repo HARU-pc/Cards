@@ -67,6 +67,7 @@ class Save_Data:
                 BlackJack.main()
             else:
                 print('Sorry, try again.')
+
 class Character_Data:
 
     def __init__(self,PC_or_NPC = 0) -> None:
