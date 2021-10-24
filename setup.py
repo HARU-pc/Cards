@@ -15,5 +15,5 @@ setup(
         "Topic :: Games/Entertainment"
     ],
     keywords='playingcard',
-    install_requires=["numpy","dill","pycryptodome"],
+    install_requires=['numpy','dill','pycryptodome'],
 )
