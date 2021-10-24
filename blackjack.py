@@ -36,7 +36,7 @@ class Save_Data:
                 with open(f".data/blackjack/{self.name}.bin","wb") as f:
                     f.write(Aes.encrypt(dill.dumps(self), self.passwd))
 
-    def Load(self):
+    def Load():
 
         while True:
             Name = input('\nUser name:')
@@ -50,23 +50,23 @@ class Save_Data:
         for i in range(3):
             Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
 
-            Pass_Check = 0
             with open(f".data/blackjack/{Name}.bin", "rb") as f:
                 try:
-                    self = dill.loads(Aes.decrypt(f.read(), Passwd))
+                    Data = dill.loads(Aes.decrypt(f.read(), Passwd))
                 except dill.UnpicklingError:
-                    Pass_Check = 1
+                    Data = 1
                     pass
 
-            if Pass_Check != 1:
-                Pass_Check = 0
+            if Data != 1 and Data.passwd == Passwd:
                 break
             elif i == 2:
                 print('3 incorrect password attempts')
-                self = None
+                Data = None
                 BlackJack.main()
             else:
                 print('Sorry, try again.')
+
+        return Data
 
 class Character_Data:
 
@@ -177,8 +177,7 @@ class App:
 
     def Load_Data(self):
 
-        self.Game_Data = Save_Data()
-        self.Game_Data.Load()
+        self.Game_Data = Save_Data.Load()
 
     def New_User_or_Load_Data(self):
 
