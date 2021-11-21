@@ -282,3 +282,5 @@ cython_debug/
 *.pyc
 my_module/__pycache__/Cards.cpython-39.pyc
 
+Cards.pyproj
+Cards.sln
