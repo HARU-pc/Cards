@@ -200,6 +200,8 @@ class App:
         self.PC_Data = self.Game_Data.PC_Data_for_save
         self.NPC_Data = self.Game_Data.NPC_Data_for_save
 
+        User_Exist = True
+
     def Prepare_New_Game(self):
 
         self.Game_Data.Reset()
@@ -404,10 +406,13 @@ if __name__ == '__main__':
         LOSE = 1
         DRAW = 2
 
+        User_Exist = False
+
         BlackJack = App()
         BlackJack.main()
 
     except (KeyboardInterrupt, BaseException):
-        BlackJack.Game_Data.Save()
+        if User_Exist:
+            BlackJack.Game_Data.Save()
         print("Thank you for playing!!")
         pass
