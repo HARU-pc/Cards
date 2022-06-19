@@ -358,7 +358,7 @@ class App:
 
     def main(self):
 
-    global User_Exist
+        global User_Exist
 
         while True:
 
