@@ -68,7 +68,7 @@ class Save_Data:
 
         return Data
 
-    def creat():
+    def Creat():
         while True:
             Name = input('\nNew user name:')
 
@@ -178,7 +178,7 @@ class App:
 
     def Create_new_user(self):
 
-        self.Game_Data = Save_Data.creat()
+        self.Game_Data = Save_Data.Creat()
 
     def Load_Data(self):
 
