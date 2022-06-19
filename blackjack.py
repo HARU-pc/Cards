@@ -200,8 +200,6 @@ class App:
         self.PC_Data = self.Game_Data.PC_Data_for_save
         self.NPC_Data = self.Game_Data.NPC_Data_for_save
 
-        User_Exist = True
-
     def Prepare_New_Game(self):
 
         self.Game_Data.Reset()
@@ -364,6 +362,7 @@ class App:
 
             if self.Index == 0:
                 self.New_User_or_Load_Data()
+
                 self.Game_Data.index = 1 if self.Game_Data.index == None else self.Game_Data.index
                 self.Index = None
 
