@@ -367,28 +367,36 @@ class App:
                 User_Exist = True
                 self.Game_Data.index = 1 if self.Game_Data.index == None else self.Game_Data.index
                 self.Index = None
+                self.Game_Data.Save()
 
             elif self.Game_Data.index == 1:
 
                 self.Prepare_New_Game()
+                self.Game_Data.Save()
 
             elif self.Game_Data.index == 2:
 
                 self.Prepare_New_Lound()
+                self.Game_Data.Save()
 
             elif self.Game_Data.index == 3:
 
                 self.Bet()
+                self.Game_Data.Save()
 
             elif self.Game_Data.index == 4:
 
                 self.Deal()
+                self.Game_Data.Save()
 
             elif self.Game_Data.index == 5:
 
                 self.Play()
+                self.Game_Data.Save()
 
             elif self.Game_Data.index == 6:
+
+                self.Game_Data.Save()
 
                 self.Resalt()
 
