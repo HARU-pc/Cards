@@ -164,7 +164,9 @@ class Character_Data:
 
 class App:
 
-    def __init__(self,name=None,passwd=None) -> None:
+    def __init__(self,User_Name=None,passwd=None) -> None:
+        self.name = User_Name
+        self.passwd = passwd
 
         self.Index = 0
 
