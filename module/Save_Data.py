@@ -14,7 +14,6 @@ class Data:
         self.name = name
         self.passwd = passwd
         self.Play_Now = None
-        self.Games_Played = []
 
     def Save(Data,Game_Name):
 
