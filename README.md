@@ -12,6 +12,7 @@ Just play with playing cards
 - blackjack.py
   - Python3
     - dill
+    - pycryptodome
 
 # Games
 - Black Jack
