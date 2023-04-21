@@ -8,6 +8,7 @@ import hashlib
 import dill
 from getpass import getpass
 
+'''
 class Save_Data:
     def __init__(self,name=None,passwd=None) -> None:
         self.name = name
@@ -97,7 +98,7 @@ class Save_Data:
         Passwd_Check = None
 
         return Data
-
+'''
 class Character_Data:
 
     def __init__(self,PC_or_NPC = 0) -> None:
@@ -415,9 +416,6 @@ try:
     DRAW = 2
 
     User_Exist = False
-
-    BlackJack = App()
-    BlackJack.main()
 
 except (KeyboardInterrupt, BaseException):
     if User_Exist:
