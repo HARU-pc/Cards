@@ -404,24 +404,23 @@ class App:
 
                 self.Check_Continue()
 
-if __name__ == '__main__':
 
-    try:
+try:
 
-        NPC = 1
-        PC = 0
+    NPC = 1
+    PC = 0
 
-        WIN = 0
-        LOSE = 1
-        DRAW = 2
+    WIN = 0
+    LOSE = 1
+    DRAW = 2
 
-        User_Exist = False
+    User_Exist = False
 
-        BlackJack = App()
-        BlackJack.main()
+    BlackJack = App()
+    BlackJack.main()
 
-    except (KeyboardInterrupt, BaseException):
-        if User_Exist:
-            BlackJack.Game_Data.Save()
-        print("\n\nThank you for playing!!")
-        pass
+except (KeyboardInterrupt, BaseException):
+    if User_Exist:
+        BlackJack.Game_Data.Save()
+    print("\n\nThank you for playing!!")
+    pass
