@@ -13,6 +13,7 @@ class Data:
     def __init__(self,name=None,passwd=None) -> None:
         self.name = name
         self.passwd = passwd
+        self.Games_Played = []
 
     def Save(Data,Game_Name):
 
@@ -60,9 +61,10 @@ class Data:
 
         return Data
 
-    def Creat(Game_Name):
+    def Creat(Game_Name,Name = None,Passwd = None):
         while True:
-            Name = input('\nNew user name:')
+            if Name == None:
+                Name = input('\nNew user name:')
 
             if not os.path.isfile(f".data/{Game_Name}/{Name}.bin"):
                 break
@@ -71,8 +73,9 @@ class Data:
                 return
 
         while True:
-            Passwd = hashlib.sha256(getpass(prompt='New Password:',stream=sys.stderr).encode()).hexdigest()
-            Passwd_Check = hashlib.sha256(getpass(prompt='Retype new Password:',stream=sys.stderr).encode()).hexdigest()
+            if Passwd == None:
+                Passwd = hashlib.sha256(getpass(prompt='New Password:',stream=sys.stderr).encode()).hexdigest()
+                Passwd_Check = hashlib.sha256(getpass(prompt='Retype new Password:',stream=sys.stderr).encode()).hexdigest()
 
             if Passwd == Passwd_Check:
                 break
