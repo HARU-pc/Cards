@@ -355,13 +355,10 @@ class App:
 
     def main(self):
 
-        global User_Exist
-
         while True:
 
             if self.Index == 0:
                 self.New_User_or_Load_Data()
-                User_Exist = True
                 self.Game_Data.index = 1 if self.Game_Data.index == None else self.Game_Data.index
                 self.Index = None
                 self.Game_Data.Save()
@@ -408,5 +405,3 @@ PC = 0
 WIN = 0
 LOSE = 1
 DRAW = 2
-
-User_Exist = False
