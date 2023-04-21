@@ -26,10 +26,11 @@ class Data:
                 with open(f".data/{Game_Name}/{Data.name}.bin","wb") as f:
                     f.write(Aes.encrypt(dill.dumps(Data), Data.passwd))
 
-    def Load(Game_Name):
+    def Load(Game_Name,Name = None,Passwd = None):
 
         while True:
-            Name = input('\nUser name:')
+            if Name == None:
+                Name = input('\nUser name:')
 
             if os.path.isfile(f".data/{Game_Name}/{Name}.bin"):
                 break
@@ -38,7 +39,8 @@ class Data:
             return
 
         for i in range(3):
-            Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
+            if Passwd == None:
+                Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
 
             with open(f".data/{Game_Name}/{Name}.bin", "rb") as f:
                 try:
