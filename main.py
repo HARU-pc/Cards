@@ -60,7 +60,7 @@ class Main:
             Chosen_Game = input("\nWhich game do you like?  ")
 
         if Chosen_Game == '1':
-            self.Game_Data.Games_Played.append('blackjack')
+            self.Game_Data.Play_Now = 'blackjack'
             BlackJack = blackjack.App(self.Game_Data.name,self.Game_Data.passwd)
             BlackJack.main()
 #try:
