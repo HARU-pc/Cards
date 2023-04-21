@@ -61,14 +61,19 @@ class Main:
 
         if Chosen_Game == '1':
             self.Game_Data.Play_Now = 'blackjack'
-            BlackJack = blackjack.App(self.Game_Data.name,self.Game_Data.passwd)
-            BlackJack.main()
-#try:
-Game_Name = 'Home'
-Home = Main()
-Home.New_User_or_Load_Data()
-Home.Select_Game()
+            self.Playing = blackjack.App(self.Game_Data.name,self.Game_Data.passwd)
+            self.Playing.main()
+try:
+    Game_Name = 'Home'
+    Home = Main()
+    Home.New_User_or_Load_Data()
+    Home.Select_Game()
 
 #except (KeyboardInterrupt, BaseException):
-#    print("\n\nThank you for playing!!")
-#    pass
+except KeyboardInterrupt:
+
+    Save_Data.Data.Save(Home.Game_Data,Game_Name)
+    Save_Data.Data.Save(Home.Playing.Game_Data,Home.Game_Data.Play_Now)
+
+    print("\n\nThank you for playing!!")
+    pass
