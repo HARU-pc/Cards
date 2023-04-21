@@ -2,7 +2,6 @@ from module import Cards,Save_Data
 import re
 import os
 import sys
-from getpass import getpass
 
 '''
 class Save_Data:
