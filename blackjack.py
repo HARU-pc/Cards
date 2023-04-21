@@ -2,10 +2,6 @@ from module import Cards,Save_Data
 import re
 import os
 import sys
-import subprocess
-import platform
-import hashlib
-import dill
 from getpass import getpass
 
 '''
