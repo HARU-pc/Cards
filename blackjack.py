@@ -423,5 +423,5 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, BaseException):
         if User_Exist:
             BlackJack.Game_Data.Save()
-        print("Thank you for playing!!")
+        print("\n\nThank you for playing!!")
         pass
