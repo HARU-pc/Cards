@@ -1,4 +1,4 @@
-from module import Save_Date
+from module import Save_Data
 import re
 import os
 from getpass import getpass
@@ -15,16 +15,16 @@ class Main:
 
     def Create_new_user(self):
 
-        self.Game_Data = Save_Date.Data.Creat(Game_Name)
+        self.Game_Data = Save_Data.Data.Creat(Game_Name)
         if self.Game_Data == None:
             self.New_User_or_Load_Data()
         else:
-            Save_Date.Data.Save(self.Game_Data,Game_Name)
+            Save_Data.Data.Save(self.Game_Data,Game_Name)
             self.Select_Game()
 
     def Load_Data(self):
 
-        self.Game_Data = Save_Date.Data.Load(Game_Name)
+        self.Game_Data = Save_Data.Data.Load(Game_Name)
         if self.Game_Data == None:
             self.New_User_or_Load_Data()
         else:

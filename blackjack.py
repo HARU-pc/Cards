@@ -1,4 +1,4 @@
-from module import Cards,Aes
+from module import Cards,Save_Data
 import re
 import os
 import sys
@@ -169,7 +169,7 @@ class Character_Data:
 
 class App:
 
-    def __init__(self) -> None:
+    def __init__(self,name=None,passwd=None) -> None:
 
         self.Index = 0
 
