@@ -184,7 +184,6 @@ class App:
 
     def New_User_or_Load_Data(self):
 
-        print('\nCreate new user:1\nLoad save data:2')
         New_or_Load = input('Input field:')
         while re.search(r'[.*?new.*?|.*?create.*?|.*?load.*?|1|2]',New_or_Load.lower()) == None:
             print(f'\nERROR:There is no {New_or_Load} in the choices.\nCreate new Game:1\nLoad save data:2 ')
@@ -403,19 +402,11 @@ class App:
                 self.Check_Continue()
 
 
-try:
+NPC = 1
+PC = 0
 
-    NPC = 1
-    PC = 0
+WIN = 0
+LOSE = 1
+DRAW = 2
 
-    WIN = 0
-    LOSE = 1
-    DRAW = 2
-
-    User_Exist = False
-
-except (KeyboardInterrupt, BaseException):
-    if User_Exist:
-        BlackJack.Game_Data.Save()
-    print("\n\nThank you for playing!!")
-    pass
+User_Exist = False
