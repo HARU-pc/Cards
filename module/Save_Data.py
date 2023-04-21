@@ -13,6 +13,7 @@ class Data:
     def __init__(self,name=None,passwd=None) -> None:
         self.name = name
         self.passwd = passwd
+        self.Play_Now = None
         self.Games_Played = []
 
     def Save(Data,Game_Name):
