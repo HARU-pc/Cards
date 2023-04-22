@@ -19,7 +19,7 @@ class Main:
         if self.Game_Data == None:
             self.New_User_or_Load_Data()
         else:
-            Save_Data.Data.Save(Game_Name,self.Game_Data)
+            Save_Data.Save(Game_Name,self.Game_Data)
             self.Select_Game()
 
     def Load_Data(self):
