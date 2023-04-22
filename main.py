@@ -72,8 +72,8 @@ try:
 #except (KeyboardInterrupt, BaseException):
 except KeyboardInterrupt:
 
-    Save_Data.Data.Save(Game_Name.Home.Game_Data)
-    Save_Data.Data.Save(Home.Game_Data.Play_Now,Home.Playing.Game_Data)
+    Save_Data.Save(Game_Name.Home.Game_Data)
+    Save_Data.Save(Home.Game_Data.Play_Now,Home.Playing.Game_Data)
 
     print("\n\nThank you for playing!!")
     pass
