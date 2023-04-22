@@ -1,13 +1,17 @@
-from module import Cards,Aes
+from module import Cards,Save_Data
 import re
 import os
 import sys
-import subprocess
-import platform
-import hashlib
-import dill
-from getpass import getpass
 
+
+NPC = 1
+PC = 0
+
+WIN = 0
+LOSE = 1
+DRAW = 2
+
+'''
 class Save_Data:
     def __init__(self,name=None,passwd=None) -> None:
         self.name = name
@@ -97,7 +101,7 @@ class Save_Data:
         Passwd_Check = None
 
         return Data
-
+'''
 class Character_Data:
 
     def __init__(self,PC_or_NPC = 0) -> None:
@@ -168,7 +172,9 @@ class Character_Data:
 
 class App:
 
-    def __init__(self) -> None:
+    def __init__(self,User_Name=None,passwd=None) -> None:
+        self.User_Name = User_Name
+        self.passwd = passwd
 
         self.Index = 0
 
@@ -178,31 +184,30 @@ class App:
 
     def Create_new_user(self):
 
-        self.Game_Data = Save_Data.Creat()
+        self.Game_Data = Save_Data.Data.Creat('blackjack',self.User_Name,self.passwd)
+        self.Game_Data.deck = None
+        self.Game_Data.lound = 0
+        self.Game_Data.index = None
+        self.Game_Data.PC_Data_for_save = Character_Data(PC)
+        self.Game_Data.NPC_Data_for_save = Character_Data(NPC)
 
     def Load_Data(self):
 
-        self.Game_Data = Save_Data.Load()
+        self.Game_Data = Save_Data.Data.Load('blackjack',self.User_Name,self.passwd)
 
     def New_User_or_Load_Data(self):
 
-        print('\nCreate new user:1\nLoad save data:2')
-        New_or_Load = input('Input field:')
-        while re.search(r'[.*?new.*?|.*?create.*?|.*?load.*?|1|2]',New_or_Load.lower()) == None:
-            print(f'\nERROR:There is no {New_or_Load} in the choices.\nCreate new Game:1\nLoad save data:2 ')
-            New_or_Load = input('Input field:')
-
-        if re.search(r'[.*?new.*?|.*?create.*?|1]',New_or_Load.lower()) != None:
-            self.Create_new_user()
-        elif re.search(r'[.*?load.*?|2]',New_or_Load.lower()) != None:
+        if os.path.isfile(f".data/blackjack/{self.User_Name}.bin"):
             self.Load_Data()
+        else:
+            self.Create_new_user()
 
         self.PC_Data = self.Game_Data.PC_Data_for_save
         self.NPC_Data = self.Game_Data.NPC_Data_for_save
 
     def Prepare_New_Game(self):
 
-        self.Game_Data.Reset()
+        self.Reset()
 
         self.Game_Data.lound = 0
 
@@ -210,7 +215,7 @@ class App:
 
     def Prepare_New_Lound(self):
 
-        self.Game_Data.Reset()
+        self.Reset()
 
         self.Game_Data.lound += 1
         self.Game_Data.index = 3
@@ -325,6 +330,12 @@ class App:
 
         self.PC_Data.Show_Status(PC)
 
+    def Reset(self):
+        self.Game_Data.PC_Data_for_save.Reset(PC)
+        self.Game_Data.NPC_Data_for_save.Reset(NPC)
+        self.Game_Data.deck = Cards.Reset()
+        Cards.Shuffle(self.Game_Data.deck)
+
     def Check_Game_Over(self):
 
         if self.PC_Data.money <= 0:
@@ -358,69 +369,45 @@ class App:
 
     def main(self):
 
-        global User_Exist
-
         while True:
 
             if self.Index == 0:
                 self.New_User_or_Load_Data()
-                User_Exist = True
                 self.Game_Data.index = 1 if self.Game_Data.index == None else self.Game_Data.index
                 self.Index = None
-                self.Game_Data.Save()
+                Save_Data.Save('blackjack',self.Game_Data)
 
             elif self.Game_Data.index == 1:
 
                 self.Prepare_New_Game()
-                self.Game_Data.Save()
+                Save_Data.Save('blackjack',self.Game_Data)
 
             elif self.Game_Data.index == 2:
 
                 self.Prepare_New_Lound()
-                self.Game_Data.Save()
+                Save_Data.Save('blackjack',self.Game_Data)
 
             elif self.Game_Data.index == 3:
 
                 self.Bet()
-                self.Game_Data.Save()
+                Save_Data.Save('blackjack',self.Game_Data)
 
             elif self.Game_Data.index == 4:
 
                 self.Deal()
-                self.Game_Data.Save()
+                Save_Data.Save('blackjack',self.Game_Data)
 
             elif self.Game_Data.index == 5:
 
                 self.Play()
-                self.Game_Data.Save()
+                Save_Data.Save('blackjack',self.Game_Data)
 
             elif self.Game_Data.index == 6:
 
-                self.Game_Data.Save()
+                Save_Data.Save('blackjack',self.Game_Data)
 
                 self.Resalt()
 
                 self.Check_Game_Over()
 
                 self.Check_Continue()
-
-
-try:
-
-    NPC = 1
-    PC = 0
-
-    WIN = 0
-    LOSE = 1
-    DRAW = 2
-
-    User_Exist = False
-
-    BlackJack = App()
-    BlackJack.main()
-
-except (KeyboardInterrupt, BaseException):
-    if User_Exist:
-        BlackJack.Game_Data.Save()
-    print("\n\nThank you for playing!!")
-    pass
