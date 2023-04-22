@@ -76,6 +76,8 @@ class Data:
             if Passwd == None:
                 Passwd = hashlib.sha256(getpass(prompt='New Password:',stream=sys.stderr).encode()).hexdigest()
                 Passwd_Check = hashlib.sha256(getpass(prompt='Retype new Password:',stream=sys.stderr).encode()).hexdigest()
+            else:
+                Passwd_Check = Passwd
 
             if Passwd == Passwd_Check:
                 break
