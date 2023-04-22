@@ -207,7 +207,7 @@ class App:
 
     def Prepare_New_Game(self):
 
-        self.Game_Data.Reset()
+        self.Reset()
 
         self.Game_Data.lound = 0
 
@@ -215,7 +215,7 @@ class App:
 
     def Prepare_New_Lound(self):
 
-        self.Game_Data.Reset()
+        self.Reset()
 
         self.Game_Data.lound += 1
         self.Game_Data.index = 3
@@ -329,6 +329,11 @@ class App:
             self.PC_Data.money -= self.PC_Data.bet
 
         self.PC_Data.Show_Status(PC)
+
+    def Reset(self):
+        self.Game_Data.sum = 0
+        self.Game_Data.ace = 0
+        self.Game_Data.cards = []
 
     def Check_Game_Over(self):
 
