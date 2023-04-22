@@ -331,9 +331,10 @@ class App:
         self.PC_Data.Show_Status(PC)
 
     def Reset(self):
-        self.Game_Data.sum = 0
-        self.Game_Data.ace = 0
-        self.Game_Data.cards = []
+        self.Game_Data.PC_Data_for_save.Reset(PC)
+        self.Game_Data.NPC_Data_for_save.Reset(NPC)
+        self.Game_Data.deck = Cards.Reset()
+        Cards.Shuffle(self.Game_Data.deck)
 
     def Check_Game_Over(self):
 
