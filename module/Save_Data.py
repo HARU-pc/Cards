@@ -15,7 +15,7 @@ class Data:
         self.passwd = passwd
         self.Play_Now = None
 
-    def Save(Data,Game_Name):
+    def Save(Game_Name,Data):
 
         if not os.path.isdir(f".data/{Game_Name}"):
             os.makedirs(f".data/{Game_Name}")
