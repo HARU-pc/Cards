@@ -69,8 +69,7 @@ try:
     Home.New_User_or_Load_Data()
     Home.Select_Game()
 
-#except (KeyboardInterrupt, BaseException):
-except KeyboardInterrupt:
+except (KeyboardInterrupt, BaseException):
 
     Save_Data.Save(Game_Name.Home.Game_Data)
     Save_Data.Save(Home.Game_Data.Play_Now,Home.Playing.Game_Data)
