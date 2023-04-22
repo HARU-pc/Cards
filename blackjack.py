@@ -3,6 +3,14 @@ import re
 import os
 import sys
 
+
+NPC = 1
+PC = 0
+
+WIN = 0
+LOSE = 1
+DRAW = 2
+
 '''
 class Save_Data:
     def __init__(self,name=None,passwd=None) -> None:
@@ -165,7 +173,7 @@ class Character_Data:
 class App:
 
     def __init__(self,User_Name=None,passwd=None) -> None:
-        self.name = User_Name
+        self.User_Name = User_Name
         self.passwd = passwd
 
         self.Index = 0
@@ -176,23 +184,23 @@ class App:
 
     def Create_new_user(self):
 
-        self.Game_Data = Save_Data.Creat()
+        self.Game_Data = Save_Data.Data.Creat('blackjack',self.User_Name,self.passwd)
+        self.Game_Data.deck = None
+        self.Game_Data.lound = 0
+        self.Game_Data.index = None
+        self.Game_Data.PC_Data_for_save = Character_Data(PC)
+        self.Game_Data.NPC_Data_for_save = Character_Data(NPC)
 
     def Load_Data(self):
 
-        self.Game_Data = Save_Data.Load()
+        self.Game_Data = Save_Data.Data.Load('blackjack',self.User_Name,self.passwd)
 
     def New_User_or_Load_Data(self):
 
-        New_or_Load = input('Input field:')
-        while re.search(r'[.*?new.*?|.*?create.*?|.*?load.*?|1|2]',New_or_Load.lower()) == None:
-            print(f'\nERROR:There is no {New_or_Load} in the choices.\nCreate new Game:1\nLoad save data:2 ')
-            New_or_Load = input('Input field:')
-
-        if re.search(r'[.*?new.*?|.*?create.*?|1]',New_or_Load.lower()) != None:
-            self.Create_new_user()
-        elif re.search(r'[.*?load.*?|2]',New_or_Load.lower()) != None:
+        if os.path.isfile(f".data/blackjack/{self.User_Name}.bin"):
             self.Load_Data()
+        else:
+            self.Create_new_user()
 
         self.PC_Data = self.Game_Data.PC_Data_for_save
         self.NPC_Data = self.Game_Data.NPC_Data_for_save
@@ -397,11 +405,3 @@ class App:
                 self.Check_Game_Over()
 
                 self.Check_Continue()
-
-
-NPC = 1
-PC = 0
-
-WIN = 0
-LOSE = 1
-DRAW = 2
