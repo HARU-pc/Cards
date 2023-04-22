@@ -8,6 +8,17 @@ import hashlib
 import dill
 from getpass import getpass
 
+def Save(Game_Name,Data):
+
+    if not os.path.isdir(f".data/{Game_Name}"):
+        os.makedirs(f".data/{Game_Name}")
+
+    if platform.system() == 'Windows':
+        subprocess.Popen(['attrib','+H','.data'],shell=True)
+
+    if Data.name != None:
+            with open(f".data/{Game_Name}/{Data.name}.bin","wb") as f:
+                f.write(Aes.encrypt(dill.dumps(Data), Data.passwd))
 
 class Data:
     def __init__(self,name=None,passwd=None) -> None:
@@ -15,17 +26,6 @@ class Data:
         self.passwd = passwd
         self.Play_Now = None
 
-    def Save(Game_Name,Data):
-
-        if not os.path.isdir(f".data/{Game_Name}"):
-            os.makedirs(f".data/{Game_Name}")
-
-        if platform.system() == 'Windows':
-            subprocess.Popen(['attrib','+H','.data'],shell=True)
-
-        if Data.name != None:
-                with open(f".data/{Game_Name}/{Data.name}.bin","wb") as f:
-                    f.write(Aes.encrypt(dill.dumps(Data), Data.passwd))
 
     def Load(Game_Name,Name = None,Passwd = None):
 
