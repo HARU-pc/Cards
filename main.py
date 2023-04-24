@@ -14,7 +14,7 @@ class Main:
 
     def Create_new_user(self):
 
-        self.Game_Data = Save_Data.Data.Creat(Game_Name)
+        self.Game_Data = Save_Data.Creat(Game_Name)
         if self.Game_Data == None:
             self.New_User_or_Load_Data()
         else:
@@ -23,7 +23,7 @@ class Main:
 
     def Load_Data(self):
 
-        self.Game_Data = Save_Data.Data.Load(Game_Name)
+        self.Game_Data = Save_Data.Load(Game_Name)
         if self.Game_Data == None:
             self.New_User_or_Load_Data()
         else:

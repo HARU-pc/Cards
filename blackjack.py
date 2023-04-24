@@ -98,7 +98,7 @@ else:
 
         def Create_new_user(self):
 
-            self.Game_Data = Save_Data.Data.Creat('blackjack',self.User_Name,self.passwd)
+            self.Game_Data = Save_Data.Creat('blackjack',self.User_Name,self.passwd)
             self.Game_Data.deck = None
             self.Game_Data.lound = 0
             self.Game_Data.index = None
@@ -107,7 +107,7 @@ else:
 
         def Load_Data(self):
 
-            self.Game_Data = Save_Data.Data.Load('blackjack',self.User_Name,self.passwd)
+            self.Game_Data = Save_Data.Load('blackjack',self.User_Name,self.passwd)
 
         def New_User_or_Load_Data(self):
 
