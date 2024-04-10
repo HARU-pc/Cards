@@ -44,13 +44,14 @@ class Main:
 
     def Select_Game(self):
 
-        Games = ["Blackjack"]
         Game_List_Number = 0
         print("\nGame List\n")
 
-        for Game_List in Games:
+        Game_List = ["Blackjack"]
+
+        for Game in Game_List:
             Game_List_Number += 1
-            print(Game_List_Number,":",Game_List,"\n")
+            print(Game_List_Number,":",Game,"\n")
 
         Chosen_Game = input("\nWhich game do you like?  ")
 
