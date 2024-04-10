@@ -54,6 +54,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+Products.code-workspace
 
 # Translations
 *.mo
