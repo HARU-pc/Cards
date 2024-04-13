@@ -256,7 +256,7 @@ else:
                 self.PC_Data.game_over += 1
                 self.PC_Data.money = float(10000 / int(10 ** self.PC_Data.game_over))
                 if self.PC_Data.money < 100:
-                    print('You died.')
+                    print('GAME OVER')
                     Check_Reset = input('Do you want to reset your data? [y/n] ')
                     while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Reset.lower()) == None:
                         Check_Reset = input(f'ERROR:There is no {Check_Reset} in the choices.\nDo you want to reset your data? [y/n] ')
@@ -265,17 +265,17 @@ else:
                         self.Index = 0
                     else:
                         self.Game_Data.index = 1
-            else:
-                self.Game_Data.index = 1
-
-                Check_Retry = input('GAME OVER\nDo you want to continue? [y/n] ')
-
-                while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
-                    Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [y/n] ')
-                if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
-                    self.main()
                 else:
-                    sys.exit()
+                    self.Game_Data.index = 1
+
+                    Check_Retry = input('GAME OVER\nDo you want to continue? [y/n] ')
+
+                    while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
+                        Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [y/n] ')
+                    if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
+                        self.main()
+                    else:
+                        sys.exit()
 
         def Check_Continue(self):
 
