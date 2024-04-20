@@ -51,6 +51,7 @@ def Load(Game_Name,Name = None,Passwd = None):
             Data = None
             return
         else:
+            Passwd = None
             print('Sorry, try again.')
 
     return Data
