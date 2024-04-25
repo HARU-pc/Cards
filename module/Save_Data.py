@@ -24,7 +24,7 @@ def Save(Game_Name,Data):
 def Load(Game_Name,Name = None,Passwd = None):
 
     while True:
-        if Name == None:
+        if Name is None:
             Name = input('\nUser name:')
 
         if os.path.isfile(f".data/{Game_Name}/{Name}.bin"):
@@ -34,7 +34,7 @@ def Load(Game_Name,Name = None,Passwd = None):
         return
 
     for i in range(3):
-        if Passwd == None:
+        if Passwd is None:
             Passwd = hashlib.sha256(getpass(prompt='Password:',stream=sys.stderr).encode()).hexdigest()
 
         with open(f".data/{Game_Name}/{Name}.bin", "rb") as f:
@@ -58,7 +58,7 @@ def Load(Game_Name,Name = None,Passwd = None):
 
 def Creat(Game_Name,Name = None,Passwd = None):
     while True:
-        if Name == None:
+        if Name is None:
             Name = input('\nNew user name:')
 
         if not os.path.isfile(f".data/{Game_Name}/{Name}.bin"):
@@ -68,7 +68,7 @@ def Creat(Game_Name,Name = None,Passwd = None):
             return
 
     while True:
-        if Passwd == None:
+        if Passwd is None:
             Passwd = hashlib.sha256(getpass(prompt='New Password:',stream=sys.stderr).encode()).hexdigest()
             Passwd_Check = hashlib.sha256(getpass(prompt='Retype new Password:',stream=sys.stderr).encode()).hexdigest()
         else:
@@ -79,9 +79,9 @@ def Creat(Game_Name,Name = None,Passwd = None):
         else:
             print('Sorry, passwords do not match.')
             Check_Retry = input('Try again? [y/N]')
-            while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
+            while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) is None:
                 Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [Y/n] ')
-            if re.search(r'[.*?y.*?|1]',Check_Retry.lower()) == None:
+            if re.search(r'[.*?y.*?|1]',Check_Retry.lower()) is None:
                 sys.exit()
 
     Game_Data = Data(Name, Passwd)

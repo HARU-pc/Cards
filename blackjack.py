@@ -138,7 +138,7 @@ else:
 
             print(f'\n\nLOUND:{self.Game_Data.lound}\n\nYour money:${self.PC_Data.money}\n')
 
-            while self.PC_Data.bet == None or type(self.PC_Data.bet) == str or self.PC_Data.money < self.PC_Data.bet or self.PC_Data.bet <= 0:
+            while self.PC_Data.bet is None or type(self.PC_Data.bet) == str or self.PC_Data.money < self.PC_Data.bet or self.PC_Data.bet <= 0:
 
                 try:
                     self.PC_Data.bet = float(input('Please bet:$').replace(',',''))  #コロンを削除
@@ -174,7 +174,7 @@ else:
                 if Player_Hit == 0:
                     print("\nHIT:1 STAND(STAY):2")
                     Hit_or_Stand = input('Input field:')
-                    while re.search(r'[.*?hit.*?|.*?sta.*?|1|2]',Hit_or_Stand.lower()) == None:
+                    while re.search(r'[.*?hit.*?|.*?sta.*?|1|2]',Hit_or_Stand.lower()) is None:
                         print("HIT:1 STAND(STAY):2")
                         Hit_or_Stand = input('Input field:')
 
@@ -258,7 +258,7 @@ else:
                 if self.PC_Data.money < 100:
                     print('GAME OVER')
                     Check_Reset = input('Do you want to reset your data? [y/n] ')
-                    while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Reset.lower()) == None:
+                    while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Reset.lower()) is None:
                         Check_Reset = input(f'ERROR:There is no {Check_Reset} in the choices.\nDo you want to reset your data? [y/n] ')
                     if re.search(r'[.*?y.*?|.*?1.*?]',Check_Reset.lower()) != None:
                         os.remove(f".data/blackjack/{self.User_Name}.bin")
@@ -270,7 +270,7 @@ else:
 
                     Check_Retry = input('GAME OVER\nDo you want to continue? [y/n] ')
 
-                    while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) == None:
+                    while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Check_Retry.lower()) is None:
                         Check_Retry = input(f'ERROR:There is no {Check_Retry} in the choices.\nDo you want to continue? [y/n] ')
                     if re.search(r'[.*?y.*?|.*?1.*?]',Check_Retry.lower()) != None:
                         self.main()
@@ -282,7 +282,7 @@ else:
             self.Game_Data.index = 2
 
             Continue_or_Finish = input('Do you want to continue? [y/n] ')
-            while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) == None:
+            while re.search(r'[.*?y.*?|.*?n.*?|1|2]',Continue_or_Finish.lower()) is None:
                 Continue_or_Finish = input(f"ERROR:There is no '{Continue_or_Finish}' in the choices.\nDo you want to continue? [Y/n] ")
             if Continue_or_Finish == 2 or re.search(r'[.*?n.*?|2]',Continue_or_Finish.lower()) != None:
                 sys.exit()
@@ -293,7 +293,7 @@ else:
 
                 if self.Index == 0:
                     self.New_User_or_Load_Data()
-                    self.Game_Data.index = 1 if self.Game_Data.index == None else self.Game_Data.index
+                    self.Game_Data.index = 1 if self.Game_Data.index is None else self.Game_Data.index
                     self.Index = None
                     Save_Data.Save('blackjack',self.Game_Data)
 
